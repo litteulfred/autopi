@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ol3 pgRouting client</title>
+	<meta charset="utf-8">
+<!--		<link href="http://localhost/OSM/ol.css" rel="stylesheet"> -->
+<!--	<link rel="stylesheet" type="text/css" href="/html/css/commun.css" /> -->
+	<link rel="stylesheet" type="text/css" href="/html/css/navigo.css" />
+	<link rel="stylesheet" type="text/css" href="/html/css/ol.css" />
+	<link rel="stylesheet" type="text/css" href="/html/css/keyboard.css" />
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/lib/ol.js"></script>
+	<script src="/lib/libIhmNavigo.js"></script>
+	<script src="/lib/libihm.js"></script>
+	<script type="text/javascript" src="/lib/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="/lib/keyboard.js"></script>
+	
+</head>
+
+<body>
+		
+	<img src='images/wait.gif' id='wait' />
+	<div id="map"></div>
+	<div id="off" onclick="sockMaster.emit('END','\'ihmNavigo.py navigo.js\'');" onmousedown="return false" onmousemove="return false" >
+		<img src="images/off.png" style="position:absolute;top:5px;left:5px;width:55px;height:55px;" />
+	</div>
+	<div id="select" onclick="selecDestination();" onmousedown="return false" onmousemove="return false" >
+		<img src="images/globe.bl.png" style="position:absolute;top:5px;left:5px;width:55px; height:55px;" />
+	</div>
+<!--	<div id="switchMultimedia" onclick="sockMaster.emit('SWITCH', 'AUTORADIO');" onmousedown="return false" onmousemove="return false" >
+		<img src="images/multimedia.png" style="position:absolute;top:5px;left:5px;width:55px; height:55px;" />
+	</div>
+-->	<div id="suivi" onclick="suiviONOFF();" onmousedown="return false" onmousemove="return false" >
+		<img id='imgSuivre' src="images/GPS_suivre.png" style="position:absolute;top:5px;left:5px;width:55px; height:55px;" />
+	</div>
+
+	
+	<!-- ----------------------------------------- -->
+	<!-- DIV compteur (a droite)                   -->
+	<!--     heure, distance, kilometrage, etc.    -->
+	<!-- ----------------------------------------- -->
+	<div id='compteur'>
+		<div id='heureGPS'>
+			<span id='Heure'></span>:<span id='Minute'></span>.<span id='Seconde'></span>
+		</div>
+<!--		<div class='line' style='top: 45px;'></div> -->
+		<div id='destination'></div>
+		<div id='trajet'>
+			<p>
+				<img src='images/horloge.png' style="width:30px;height:30px;margin-left:6px;vertical-align:middle;" />
+				<span id='arrTime' style="margin-left:5px;" ></span>
+			</p>
+			<p>
+				<img src='images/chrono1.png' style="width:30px;height:30px;margin-left:6px;vertical-align:middle;" />
+				<span id='tpsRestant' style="margin-left:5px;" ></span> / <span id='tpsTot'></span>
+			</p>
+			<p>
+				<img src='images/distance.png' style="width:30px;height:30px;margin-left:6px;vertical-align:middle;" />
+				<span id='distRestant' style="margin-left:5px;" ></span> / <span id='distTot'></span>
+			</p>
+		</div>
+		<div class='line' style='top: 255px;'></div>
+		<div id='vitesse'></div>
+		<div id='altitude'></div>
+		
+        <div class='line' style='top: 345px;'></div>        
+        <div id='media' onclick="sockMaster.emit('SWITCH', 'AUTORADIO');" >
+            <img id='pochette' src='' /> 
+            <div id='titre'></div>
+        </div>
+
+		<div id='etatCPU'>- %</div>
+		<div id='etatTemp'>- °C</div>
+
+  	</div>
+  	
+  	<div id='echelle'></div>
+  	
+	<!-- ----------------------------------------- -->
+	<!-- DIV position (en bas)                     -->
+	<!--     limitation + rue en cours             -->
+	<!-- ----------------------------------------- -->
+  	<div id='position'>
+  		<div id='panneauKM'><span id='maxspeed'>-</span></div>
+  		<div id='refRoad'><span id='ref'></span>&nbsp;&nbsp;<span id='road'></span></div>
+  		
+  		<div id='distRadar'>
+	  		<img id='imgRadar' src='images/radar_bl.png' />
+	  		<div id='distRDR'>1000 m</div>
+	  	</div>
+  		
+  	</div>
+ 
+    <!-- ----------------------------------------- -->
+    <!-- DIV next route (haut)                     -->
+    <!-- ----------------------------------------- -->
+    <div id='divNextRoad'>
+        <div id='nextRoute' >
+            <center>
+                <div id='distnextroad'></div>
+                <div id='nextroad'>-</div>
+            </center>
+        </div>
+        <!-- <div id='nextDirection' ><img id='imgDirection' src='' /></div> -->
+        <img id='imgDirection' src='' />
+        
+    </div>
+ 
+ 	<!-- ------------------------------------------------------------- -->
+	<!-- DIV control : param, recherche destination                    -->
+	<!-- ------------------------------------------------------------- -->
+	<div id='divControl'>
+		<div id='menu'>
+		<ul>
+			<li><img class='iconSelec' id='iconville' src='images/GPS_carte.png' onclick="document.getElementById('divControl').style.display = 'none';" onmousedown="return false" onmousemove="return false" /></li>
+			<li><img class='iconSelec' id='iconville' src='images/GPS_ville.png' onclick='searchBy("ville");typeSearch="ville"' onmousedown="return false" onmousemove="return false" /></li>
+			<li><img class='iconSelec' id='iconpoi' src='images/GPS_bookmark.png' onclick='searchBy("poi");typeSearch="poi";sockNavig.emit("GETFAV");' onmousedown="return false" onmousemove="return false" /></li>
+			<li><img class='iconSelec' id='iconxy' src='images/GPS_coordonnee.png' onclick='searchBy("xy");typeSearch="xy"' onmousedown="return false" onmousemove="return false" /></li>
+			<li><img class='iconSelec' id='iconhisto' src='images/GPS_histo.png' onclick='searchBy("histo");typeSearch="histo";sockNavig.emit("GETHISTO");' onmousedown="return false" onmousemove="return false" /></li>
+            <li><img class='iconSelec' id='iconparam' src='images/GPS_param.png' onclick='searchBy("param");typeSearch="param"' onmousedown="return false" onmousemove="return false" /></li>
+		</ul>
+		</div>
+		
+		<div id="titreSelec">VILLE</div>
+		<div id='lstValues' ></div>	
+		<div id='divKeyboard'>
+			<div id='write'></div>
+			<ul id="keyboard">
+				<li class="switch"><span class="off">123</span><span class="on">ABC</span></li>
+                <li class="raz">raz</li>
+                <li class="delete"><--</li>
+				<li class="symbol sec-lig"><span class="off">A</span><span class="on"></span></li>
+				<li class="symbol"><span class="off">B</span><span class="on">1</span></li>
+				<li class="symbol"><span class="off">C</span><span class="on">2</span></li>
+				<li class="symbol"><span class="off">D</span><span class="on">3</span></li>
+				<li class="symbol"><span class="off">E</span><span class="on"></span></li>
+				<li class="symbol sec-lig"><span class="off">F</span><span class="on"></span></li>
+				<li class="symbol"><span class="off">G</span><span class="on">4</span></li>
+				<li class="symbol"><span class="off">H</span><span class="on">5</span></li>
+				<li class="symbol"><span class="off">I</span><span class="on">6</span></li>
+				<li class="symbol"><span class="off">J</span><span class="on"></span></li>
+				<li class="symbol sec-lig"><span class="off">K</span><span class="on"></span></li>
+				<li class="symbol"><span class="off">L</span><span class="on">7</span></li>
+				<li class="symbol"><span class="off">M</span><span class="on">8</span></li>
+				<li class="symbol"><span class="off">N</span><span class="on">9</span></li>
+				<li class="symbol"><span class="off">O</span><span class="on"></span></li>
+				<li class="symbol sec-lig"><span class="off">P</span><span class="on">N</span></li>
+				<li class="symbol"><span class="off">Q</span><span class="on">S</span></li>
+				<li class="symbol"><span class="off">R</span><span class="on">0</span></li>
+				<li class="symbol"><span class="off">S</span><span class="on">E</span></li>
+				<li class="symbol"><span class="off">T</span><span class="on">W</span></li>
+				<li class="symbol sec-lig"><span class="off">U</span><span class="on"></span></li>
+				<li class="symbol"><span class="off">V</span><span class="on">°</span></li>
+				<li class="symbol"><span class="off">W</span><span class="on">'</span></li>
+				<li class="symbol"><span class="off">X</span><span class="on">"</span></li>
+				<li class="symbol"><span class="off">Y</span><span class="on"></span></li>
+				<li class="space sec-lig">&nbsp;</li>
+                <li class="symbol tiret"><span class="off">-</span><span class="on">-</span></li>
+				<li class="symbol"><span class="off">Z</span><span class="on">.</span></li>
+			</ul>
+		</div>
+		
+		<div id='divParam'>
+			<div id='lstParam' ></div>
+		</div>
+		<div id='lstParamSwitch' ></div>
+
+		<div id='divPoi'>
+			<div id='lstSousGrp' ></div>
+			<div id='lstGrpPoi' ></div>
+			<img id='back' src='images/back.png' onclick='searchBy("poi");typeSearch="poi"' />
+		</div>
+		
+	</div>
+	
+ 	<!-- ------------------------------------------------------------- -->
+	<!-- DIV question                                                  -->
+	<!-- ------------------------------------------------------------- --> 	
+	<div id='question'>
+		<div id='phrase'></div>
+		<div id='reponses'></div>
+	</div>
+		
+	<script type="text/javascript">
+
+		var url = document.URL.split(":");
+		var hostAutoradio = url['1'].replace("//", "")
+		
+		// connection socket navigo.js
+		var sockNavig = io.connect('http://'+hostAutoradio+':8125');
+
+		// connection socket Master
+		var sockMaster = io.connect('http://'+hostAutoradio+':8121');
+		
+		// connection socket system
+		var sockSys = io.connect('http://'+hostAutoradio+':8124');
+
+		// activation de la mise à l'heure
+		window.onload = heureAuto('Heure');
+
+		// initialisation des variables
+        var xPosit = 0.1841;
+        var yPosit = 47.200001;
+		var villeTrg = '';
+		var postalTrg = '';
+		var searchLayer = '';
+		var villeTRG = '';
+		var postalTRG = '';
+		var typeSearch = 'ville';
+		var itineraire = [];
+		
+		var image = new ol.style.Circle({
+			radius: 5,
+			fill: null,
+			stroke: new ol.style.Stroke({color: 'red', width: 1})
+		});
+		var styles = {
+			'Point': new ol.style.Style({
+				image: image
+			}),
+			'LineString': new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'green',
+				width: 1
+			})
+		}),
+		'MultiLineString': new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: '#FF00BF',
+				width: 10
+			})
+		}),
+/*		'MultiPoint': new ol.style.Style({
+			image: image
+		}),
+		'MultiPolygon': new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'yellow',
+				width: 1
+			}),
+			fill: new ol.style.Fill({
+				color: 'rgba(255, 255, 0, 0.1)'
+			})
+		}),
+*/		'Polygon': new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'green',
+				lineDash: [4],
+				width: 2
+			}),
+			fill: new ol.style.Fill({
+				//color: 'rgba(0, 0, 255, 0.1)'
+				color: 'rgba(0, 0, 0, 0.1)'
+			})
+		}),
+/*		'GeometryCollection': new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'magenta',
+				width: 2
+			}),
+			fill: new ol.style.Fill({
+				color: 'magenta'
+			}),
+			image: new ol.style.Circle({
+				radius: 10,
+				fill: null,
+				stroke: new ol.style.Stroke({
+					color: 'magenta'
+				})
+			})
+		}),
+		'Circle': new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'red',
+				width: 2
+			}),
+			fill: new ol.style.Fill({
+				color: 'rgba(255,0,0,0.2)'
+			})
+		})
+*/	};
+		var styleFunction = function(feature) {
+			return styles[feature.getGeometry().getType()];
+		};
+
+		/* ----------------------------- */
+		/* affichage de la MAP           */
+		/* ----------------------------- */
+		var map = '';
+		if ( location.hostname == '192.168.56.2' ) {
+			console.log('----> map WEB');
+			map = createMapWeb();
+		} else {
+			console.log('----> map TILE');
+			map = createMapTile();
+		}
+			
+		/* -------------------------------- */
+		/* affichage de la VOITURE (MOBIL)  */
+		/* -------------------------------- */
+		var iconMobil = new ol.Feature({
+			geometry: new ol.geom.Point(ol.proj.transform([xPosit, yPosit], 'EPSG:4326', 'EPSG:3857')),
+		});
+		var iconStyle = new ol.style.Style({
+			image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+				anchor: [0.5,0.5],
+				size: [100,100],
+				scale: 0.45,
+				opacity: 1,
+				src: 'images/mobil.png',
+				rotation: 0,
+			}))
+		});
+		iconMobil.setStyle(iconStyle);
+		var mobilSource = new ol.source.Vector({
+			features: [iconMobil]
+		});
+		var mobilLayer = new ol.layer.Vector({
+			source: mobilSource
+		});
+		mobilLayer.setZIndex(10);
+		map.addLayer(mobilLayer);
+	
+		// LSTVILLE - reception des villes en fonction caractere entree
+		sockNavig.on('LSTVILLE', function(lstville) {
+
+			var tmpVille = '';
+
+			lstville.forEach(function(ville) {
+
+				tmpVille = tmpVille+'<br /><div style="height: 30px;"' 
+					+' onclick="searchRoad(\''+ville['name']+'\','
+											+'\''+ville['code_postal']+'\','
+											+'\''+ville['lattarget']+'\','
+											+'\''+ville['lontarget']+'\');'
+					+' villeTRG = \''+ville['name']+'\';'
+					+' postalTRG = \''+ville['code_postal']+'\';" >'+ville['name']+' ('+ville['code_postal']+')</div>';
+			});
+			//console.log(tmpVille);
+			document.getElementById("lstValues").innerHTML = tmpVille;
+		}) // LSTVILLE
+
+		// PARAM - recuperation des parametres du GPS
+		sockNavig.on('PARAM', function(param) {
+
+			//console.log(param);
+			var lstparam = '';
+			var lstSwitch = '';
+			param.forEach(function(row, index) {
+				
+				//console.log('===>'+row['type'].trim()+'===');
+				var type = row['type'].trim().split(':');
+				if ( type[0] == "onoff" ) {
+					
+					//var imgSwitch = 'switch_off.png';
+					var Checked = '';
+					if ( row['valeur'].trim() == "on" ) {
+						Checked = "checked='checked'";
+					}
+
+					lstparam = lstparam +"<label class='container'>"+row['parametre'].trim()
+									+"<input type='checkbox' "+Checked
+									+"' onclick=\"sockNavig.emit('SETPARAM', {parametre:'"+row['parametre']+"', id:'"+row['id']+"',type:'"+row['type']+"'});\" />"
+									+"<span class='checkmark'></span>"
+									+"</label><br />";
+				}
+				
+				
+				if ( type[0] == "switch" ) {
+					
+					lstSwitch = lstSwitch+"<div style='height:40px;width:380px;border-bottom:2px solid #fff;' ><b><u><span class='parametre' >"
+									+row['parametre']+" :</u></b></span></div>"
+									+"<br />";
+					//var lstSwitch = '';
+					for(var i= 1; i < type.length; i++) {
+	
+						var Checked = '';
+						if ( row['valeur'] == type[i] ) {
+							Checked = "checked='checked'";
+						}
+					
+						lstSwitch = lstSwitch + "<label class='container' >"+type[i]
+										+"<input type='radio' name='"+row['parametre']+"' onclick=\"sockNavig.emit('SETPARAM', {parametre:'"+row['parametre']+"', id:'"+row['id']+"',type:'"+row['type']+"', valeur:'"+type[i]+"'});\" value='"+type[i]+"' "+Checked+" />"
+										+"<span class='checkmark'></span></label><br />";
+					}
+					lstSwitch = lstSwitch + "</div>";
+				}
+		    })
+			document.getElementById("lstParam").innerHTML = lstparam;
+			document.getElementById("lstParamSwitch").innerHTML = lstSwitch;
+		}) //PARAM
+		
+		// ROADJSON - reception de la nouvelle route sous forme de JSON
+		var routeLayer;
+		sockNavig.on('ROADJSON', function(geojsonObject) {
+
+               console.log('-----> reception nouvelle route');
+			var routeSource = new ol.source.Vector({
+				features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+			});
+
+			routeLayer = new ol.layer.Vector({
+				source: routeSource,
+				style: styleFunction,
+				opacity: 0.6
+			});
+			routeLayer.setZIndex(5);
+			map.addLayer(routeLayer);
+		});
+
+		// POLYSEARCH - affichage du carre de recherche
+		sockNavig.on('POLYSEARCH', function(coord) {
+	
+			console.log('------> reception et affichage polygone de recherche');
+	
+			//console.log(coord);
+			var point1 = ol.proj.transform([coord['x1'], coord['y1']], 'EPSG:4326', 'EPSG:3857');
+			var point2 = ol.proj.transform([coord['x2'], coord['y2']], 'EPSG:4326', 'EPSG:3857');
+		
+			var polyjsonObject = {
+				'type': 'FeatureCollection',
+				'crs': {
+					'type': 'name',
+					'properties': {
+						'name': 'EPSG:3857'
+					}
+				},
+				'features': [{
+					'type': 'Feature',
+					'geometry': {
+						'type': 'Polygon',
+						'coordinates': [[
+							[point1[0], point1[1]],
+							[point2[0], point1[1]],
+							[point2[0], point2[1]],
+							[point1[0], point2[1]],
+							[point1[0], point1[1]]
+						]]
+					}
+				}]
+			}
+			var polySearch = new ol.source.Vector({
+				features: (new ol.format.GeoJSON()).readFeatures(polyjsonObject)
+			});
+		
+			searchLayer = new ol.layer.Vector({
+				source: polySearch,
+				style: styleFunction,
+				opacity: 0.4
+			});
+			map.addLayer(searchLayer);
+			//searchLayer.setZIndex(10);	
+		});
+
+		// WAIT - etat de calcul des routes
+		sockNavig.on('WAIT', function(etat) {
+		
+			if ( etat == 'on' ) {
+				document.getElementById("wait").style.display = "initial";
+				document.getElementById("trajet").style.display = "none";
+
+				// suppression du layer en cours et demande d'une nouvelle route
+				map.removeLayer(routeLayer);
+				if ( searchLayer != '' ) { map.removeLayer(searchLayer); }
+			}
+			if ( etat == 'off' ) {
+				document.getElementById("wait").style.display = "none";
+				document.getElementById("trajet").style.display = "initial";
+				if ( searchLayer != '' ) { map.addLayer(searchLayer); }
+			}
+		});
+	
+		// reception coordonnee GPSD pour deplacement mobil et map
+		var suivi = 'ON';
+		sockNavig.on('GPSD', function(datagps) {
+
+			//console.log('reception data GPS');
+
+			xPosit = datagps['xPosit'];
+			yPosit = datagps['yPosit'];
+            
+			//var vitess = parseFloat(datagps['vitesse']) *  parseFloat(3.6);
+			document.getElementById("vitesse").innerHTML = datagps['vitesse']+" km/h";
+			document.getElementById("altitude").innerHTML = datagps['altitude']+" m";
+			
+			// deplacement du mobil (NB : il reste au centre de l ecran quand ecran bouge)
+			iconMobil.getGeometry().setCoordinates(ol.proj.transform([parseFloat(xPosit), parseFloat(yPosit)], 'EPSG:4326', 'EPSG:3857'));
+			
+			if ( suivi == 'ON' ) {
+			
+				// deplacement de la map
+				map.getView().setCenter(ol.proj.transform([parseFloat(xPosit), parseFloat(yPosit)], 'EPSG:4326', 'EPSG:3857'));
+
+				// deplacement du mobil (pour qu'il reste au centre de l'ecran)
+				// iconMobil.getGeometry().setCoordinates(ol.proj.transform([parseFloat(xPosit), parseFloat(yPosit)], 'EPSG:4326', 'EPSG:3857'));
+			
+		
+				// tourner la carte si le vitesse > 5
+				if ( parseInt(datagps['vitesse']) > 5 ) {
+
+					var orientRad = parseFloat(datagps['compas'])*(2*Math.PI)/360;
+					var mapOrient = parseFloat(2*Math.PI) - parseFloat(orientRad);
+				
+					map.getView().setRotation(mapOrient);
+					iconStyle.getImage().setRotation(0);
+				}
+				
+			} else {
+				
+				// si mode non suivi, on oriente le mobil et la carte vers le nord
+				if ( parseInt(datagps['vitesse']) > 5 ) {
+					var orientRad = parseFloat(datagps['compas'])*(2*Math.PI)/360;
+					iconStyle.getImage().setRotation(orientRad);
+				}
+                map.getView().setRotation(0);
+			}
+				
+			// gestion avertissement radar
+			if ( datagps['alerte'] ) {
+			
+				document.getElementById('distRadar').style.display = 'initial';
+				document.getElementById('distRadar').style.background = datagps['color'];
+				document.getElementById('distRDR').innerHTML = datagps['radarDistance']+'m';
+			
+			} else {
+				document.getElementById('distRadar').style.display = 'none';
+			}
+		
+			//sockNavig.emit('EMPLAC', datagps);
+		})
+		
+		// TRAJET - reception des donnees trajet / temps
+		sockNavig.on('TRAJET', function(options) {
+			
+			document.getElementById("destination").innerHTML = options.trg_ville+" ("+options.trg_postal+")";
+			document.getElementById("tpsTot").innerHTML = options.trg_tpstot;
+			document.getElementById("arrTime").innerHTML = options.arrTime;
+			if ( options.tpsrestant != '' ) {
+				document.getElementById("tpsRestant").innerHTML = options.tpsrestant;
+			}
+			document.getElementById("distTot").innerHTML = options.trg_disttot + " km";
+			document.getElementById("distRestant").innerHTML = options.distrestante;
+		});
+		
+		// MOBIL - reception data position rue mobile
+		sockNavig.on('MOBIL', function(data) {
+	
+			document.getElementById("maxspeed").innerHTML = parseInt(data['maxspeed_forward']);
+			document.getElementById("ref").innerHTML = data['ref'];
+			document.getElementById("road").innerHTML = data['name'];
+		})
+		
+		// GRPPOI - reception des group POI
+		sockNavig.on('GRPPOI', function(result) {
+			
+			var lstPOIgrp = '';
+			result.forEach(function(poi) {
+			
+				//console.log(poi['visible']+' '+poi['titre']+' '+poi['icon']+' '+poi['commentaire']);
+
+				if ( poi['visible'] ) {
+					
+					var poitarget = { mode: 'bygrp', id: poi['id'] };
+					lstPOIgrp = lstPOIgrp + "<div class='grpPOI' onclick=\"sockNavig.emit('GETPOI', 'bygrp:"+poi['id']+"');\" >"
+								+"<img class='imgPoi' src='images/GPS/"+poi['icon']+"' />"
+								+"<div class='titrePoi'>"+poi['nom']+"</div>"
+								+"</div>"
+				}			
+			})
+			//console.log(lstPOIgrp);
+			document.getElementById('lstGrpPoi').innerHTML = lstPOIgrp;
+		})
+
+		// SOUSGRPPOI - reception des sous group POI
+		sockNavig.on('SOUSGRPPOI', function(result) {
+			
+			var lstPOIgrp = '';
+			var topDiv = '0';
+			var leftDiv = '0';
+			var offsetLeft = '100';
+			var offsetTop = '100';
+			var i = '1';
+			
+			document.getElementById('lstSousGrp').style.display = 'initial';
+			document.getElementById('lstGrpPoi').style.display = 'none';
+			
+			result.forEach(function(poi) {
+			
+				//console.log(poi['visible']+' '+poi['titre']+' '+poi['icon']+' '+poi['commentaire']);
+
+				if ( poi['visible'] ) {
+				
+					lstPOIgrp = lstPOIgrp + "<div class='grpPOI' onclick='' style='position:absolute;top:"+topDiv+"px;left:"+leftDiv+"px;' >"
+								+"<img class='imgPoi' src='images/GPS/"+poi['icon']+"' />"
+								+"<div class='titrePoi'>"+poi['nom']+"</div>"
+								//+"<div class='titrePOI'>"+poi['commentaire']+"</div>"
+								+"</div>"
+				}
+				leftDiv = parseInt(offsetLeft) + parseInt(leftDiv);
+				if ( leftDiv == '300' ) {
+					leftDiv = '0';
+					topDiv = parseInt(offsetTop) + parseInt(topDiv);
+				}
+			})
+			//console.log(lstPOIgrp);
+			document.getElementById('lstSousGrp').innerHTML = lstPOIgrp;
+		})
+		
+		// LSTPOI - reception POI filtre
+		sockNavig.on('LSTPOI', function(listpoi) {
+			
+			var divLstPoi = '';
+			var topdiv = '0';
+			listpoi.forEach(function(poi) {
+				
+				var tags = JSON.parse(poi['tags']);
+				var distance = Math.round(parseFloat(poi['dist']) / 1000);
+				
+				// a.lat, a.lon, a.tags, b.icon, dist
+				divLstPoi = divLstPoi + '<div class="respoi" style="top:'+topdiv+'px;" onclick="searchRoad(\''+tags['desc']+'\','
+											+'\''+poi['nom']+'\','
+											+'\''+poi['lat']+'\','
+											+'\''+poi['lon']+'\');" >'
+							+'<img class="imgPoi" src="images/GPS/'+poi['icon']+'" />'
+							+'<div class="kmPoi" >'+distance+'km</div>'
+							+'<div class="descPoi" >'+tags['desc']+'</div>'
+						+'</div>';
+				
+				topdiv = parseInt(topdiv) + 60;
+				
+				//console.log(distance+' '+tags['name']+' '+tags['desc']+' '+poi['icon']);
+			})
+			//console.log(divLstPoi);
+			document.getElementById('lstValues').innerHTML = divLstPoi;
+		})
+  
+        // LSTHISTO - recuperation de l historique des recherches
+        sockNavig.on('LSTHISTO', function(histo) {
+        
+            var divLstHisto = '';
+            var topdiv = '0';
+            histo.forEach(function(his) {
+                
+                var dateHisto = his['date'].split('T');
+                divLstHisto = divLstHisto + '<div class="respoi" style="top:'+topdiv+'px;" onclick="searchRoad(\''+his['ville']+'\','
+                                            +'\''+his['postal']+'\','
+                                            +'\''+his['y']+'\','
+                                            +'\''+his['x']+'\');" >'
+                                            +'<div class="dateHisto" >'+dateHisto[0]+' </div>'
+                                        +'<div class="descHisto" >'+his['ville']+' ('+his['postal']+') </div></div>';
+                topdiv = parseInt(topdiv) + 60;
+            
+            })
+            document.getElementById('lstValues').innerHTML = divLstHisto;
+        })
+		
+		// QUESTION - reception question
+		sockNavig.on('QUESTION', function(question) {
+		
+		
+			console.log('reception question '+question);
+		
+			document.getElementById('question').style.display = 'initial';
+			
+			document.getElementById('phrase').innerHTML = question['phrase'];
+			
+			var reponse = question['reponses'].trim().split(':');
+			document.getElementById('reponses').innerHTML = '';
+			var boutton = '';
+			reponse.forEach(function(rep) {
+				
+				boutton = boutton + "<div id='butRep' onclick=\"sockNavig.emit(\'REPROUTE\', \'" + rep + "\');document.getElementById(\'question\').style.display = \'none\';\" >" + rep + "</div><br />";
+				
+			})
+			document.getElementById('reponses').innerHTML = boutton;
+		})
+
+		// HISTOITI - recuperation historique
+		sockNavig.on('HISTOITI', function(result) {
+			result.forEach(function(histo) {
+				console.log('------> historique '+histo['date']+' - '+histo['itineraire']['nom']);
+			})
+		})
+		
+		// FAVORIS - recuperation des favoris
+		sockNavig.on('FAVORIS', function(favoris) {
+		
+			document.getElementById('lstValues').innerHTML = '';
+			lstFavoris = '';
+			
+			favoris.forEach( function(fav) {
+				
+				lstFavoris = lstFavoris+'<br /><div style="height: 30px;"' 
+					+' onclick="searchRoad(\''+fav['nom']+'\','
+											+'\'dms\','
+											+'\''+fav['lat']+'\','
+											+'\''+fav['lon']+'\');'
+					+' villeTRG = \''+fav['nom']+'\';'
+					+' postalTRG = \'dms\';" ><b><u>'+fav['nom']+'</u></b> <font size="4px">'+fav['adresse']+' - '+fav['lat']+' '+fav['lon']+'</font></div>';
+				
+			})
+			document.getElementById("lstValues").innerHTML = lstFavoris;
+		})
+
+        // NEXTROAD - recuperation route suivante
+        sockNavig.on('NEXTROAD', function(nextroad) {
+            document.getElementById('nextroad').innerHTML = nextroad['route'];
+            document.getElementById('distnextroad').innerHTML = nextroad['distance'];
+            document.getElementById('imgDirection').src = nextroad['imageDirection'];
+        })
+
+		/* -------------------------------- */
+		/* affichage Etat system            */
+		/* -------------------------------- */
+		sockSys.on('ETAT', function(etat) {
+		
+			document.getElementById('etatCPU').innerHTML = etat['cpu'] + "%";
+			document.getElementById('etatTemp').innerHTML = etat['temp'] + "°C";
+		
+		})
+  
+        /* --------------------------------- */
+        /*  TITRE - recup du titre joue      */
+        /* --------------------------------- */
+        sockNavig.on('TITRE', function(titre){
+            document.getElementById('titre').innerHTML = "<b>"+titre['nomtitre']+"</b><br />"+titre['nomartist'];
+            document.getElementById('pochette').src = titre['coverpath'];
+        });
+	
+	</script>
+</body>
+</html>

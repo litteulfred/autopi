@@ -1,0 +1,99 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+/*	font: 71%/1.5 Verdana, Sans-Serif; */
+	background: #eee;
+}
+
+
+#write {
+/*	margin: 0 0 5px;
+	padding: 5px;
+*/	position: absolute;
+	top: 0px;
+	width: 340px;
+	height: 40px;
+/*	font: 1em/1.5 Verdana, Sans-Serif; */
+	background: #fff;
+	border: 1px solid #f9f9f9;
+	font-size: 28px;
+/*	-moz-border-radius: 5px; */
+	-webkit-border-radius: 5px;
+	color: black;
+}
+#keyboard {
+/*	margin: 0;
+	padding: 0;
+*/	position: absolute;
+	width: 100%;
+	top: 45px;
+	list-style: none;
+	border: 0px solid black;
+/*	position: absolute;
+	bottom: 5px;
+	left: 5px;
+*/
+}
+#keyboard li {
+    float: left;
+    margin: 0 5px 5px 0;
+    width: 65px;
+    height: 65px;
+    line-height: 40px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #f9f9f9;
+/*    -moz-border-radius: 5px; */
+    -webkit-border-radius: 5px;
+    border: 0px solid black;
+    color: black;
+    font-size: 25px;
+}
+.iconButt {
+	width:80%;
+	height:80%;
+	margin-left: auto;
+	margin-top: 5px;
+}
+.sec-lig {
+	clear: left;
+	left: 10px;
+}
+#keyboard .esc {
+	background: lightgray;
+	width: 100px;
+}
+#keyboard .delete {
+	background: lightgray;
+	width: 111px;
+}
+#keyboard .deleteAll {
+	background: lightgray;
+	width: 100px;
+}
+#keyboard .switch {
+	background: lightgray;
+	width: 111px;
+}
+#keyboard .raz {
+	background: lightgray;
+	width: 111px;
+}
+#keyboard .space {
+	width: 135px;
+}
+#keyboard .tiret {
+	width: 135px;
+}
+.on {
+	display: none;
+}
+#keyboard li:hover {
+	position: relative;
+	top: 1px;
+	left: 1px;
+	border-color: #e5e5e5;
+	cursor: pointer;
+}

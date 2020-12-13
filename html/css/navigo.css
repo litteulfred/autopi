@@ -1,0 +1,589 @@
+a:link, a:visited, a:hover, a:active {
+	color: white;
+	text-decoration: none;
+}
+#wait {
+	position: absolute;
+	top: 130px;
+	right: 65px;
+	height: 70px;
+	width: 70px;
+	display: none;
+	z-index: 3;
+}
+#map {
+	position: absolute;
+	top: 0px;
+	left:0px;
+	width: 1024px;
+	height: 900px;
+	overflow: hidden;
+	z-index: 1;
+}
+
+#divNextRoad {
+    position:absolute;
+    top: 0px;
+    height: 50px;
+    right: 200px;
+    width: 600px;
+    background-color:rgba(0,60,136,.5);
+    z-index: 2;
+    color: #fff;
+}
+#distnextroad {
+    position:absolute;
+    top: 0px;
+    font-size: 25px;
+}
+#nextroad {
+    position:absolute;
+    top: 30px;
+    font-size: 20px;
+}
+#nextDirection, #imgDirection {
+    position:absolute;
+    top: 0px;
+    left: -50px;
+    height: 50px;
+    width: 50px;
+    background-color:rgba(0,60,136,.5);
+}
+
+/* --------------------------------- */
+/* radio check / case check          */
+/* --------------------------------- */
+/* Customize the label (radioButton) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 25px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+}
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background-color: #eee;
+  border-radius: 10%;
+/*  border-radius: 50%; */
+}
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #31B404;
+}
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+/*.container .checkmark:after {
+  top: 10px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+}
+*/
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 0px;
+  width: 5px;
+  height: 20px;
+  border: solid white;
+  border-width: 0 7px 7px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+/* DIV question */
+/* ------------ */
+#question {
+	position: absolute;
+	background-color:rgba(0,60,136,.8);
+	left: 0px;
+	top: 0px;
+	width: 1024px;
+	height: 600px;
+	display: none;
+	z-index: 9;
+	color: white;
+}
+#phrase {
+	position: absolute;
+	top:50px;
+	font-size: 50px;
+	width: 1024px;
+	text-align: center;
+}
+#reponses {
+	position: absolute;
+	top:250px;
+	width: 1024px;
+	text-align: center;
+	font-size: 40px;
+}
+#butRep {
+	
+}
+
+/* DIV parametrage + selection destination */
+/* --------------------------------------- */
+#divControl {
+	position: absolute;
+	top:0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 3;
+	color: white;
+/*	background-color:rgba(0,60,136,.8); */
+	background-color: black;
+	overflow:hidden;
+	background-image:radial-gradient(#3E485C, #000000);
+}
+#menu {
+	position: absolute;
+	top:0px;
+	left: 0px;
+	width: 70px;
+	height: 600px;
+	background-color:rgba(0,60,136,.5);
+}
+#titreSelec {
+	position: absolute;
+	top:0px;
+	left: 80px;
+	width: 100%;
+	height: 40px;
+	font-style: bold;
+	font-size: 30px;
+	text-align: center;
+	box-shadow: 7px 7px 9px black;
+}
+#buttVille, #buttRue {
+	position:absolute;
+	left: 80px;
+	height: 20px;
+	font-size: 20px;
+}
+#selecVille, #selecRoad {
+	position:absolute;
+	background: lightgray;
+	left: 5px;
+	height: 40px;
+	width: 485px;
+	border-radius:10px;
+	color: black;
+	font-size: 30px;
+	box-shadow: 3px 3px 5px gray;
+}
+#buttEnvoi {
+	position: absolute;
+	left: 495px;
+	top: 35px;
+	height: 120px;
+	width: 65px;
+	background: orange;
+	box-shadow: 3px 3px 5px gray;
+	border-radius: 2px 10px 10px 2px;
+}
+#iconChoix {
+	position: absolute;
+	top: 5px;
+	left: 580px;
+}
+.iconSelec {
+	width: 65px;
+	height: 65px;
+}
+#lstValues {
+	position: absolute;
+	top: 80px;
+	left: 440px;
+	font-size: 25px;
+	color: white;
+	height: 540px;
+	width: 590px;
+	overflow:scroll;
+/*	background-color:rgba(0,60,136,.8); 
+	border-radius:10px;
+	box-shadow: 3px 3px 5px rgba(0,60,136); */
+}
+#upValues, #downValues {
+	position: absolute;
+	right: 5px;
+	top: 75px;
+	width: 65px;
+	height: 65px;
+}
+#downValues {
+	top: 515px;
+}
+#divKeyboard, #divParam, #divPoi {
+	position: absolute;
+	top: 45px;
+	left: 87px;
+	width: 350px;
+	height: 550px;
+	border: 0px solid #f9f9f9;
+}
+#divParam, #divPoi {
+	display: none;
+}
+.parametre {
+	position: absolute;
+	left: 0px;
+	font-size: 25px;
+	width: 300px;
+}
+#buttKeyboard {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	height: 65px;
+	width: 65px;
+	background-color: #fff;
+	border-radius:2px;
+}
+#lstParam {
+	position: absolute;
+	top: 0px;
+	height: 200px;
+	border: 0px solid #f9f9f9;
+}
+#lstParamSwitch {
+	position: absolute;
+	top: 50px;
+	left: 590px;
+	width: 400px;
+	height: 200px;
+	border: 0px solid #f9f9f9;
+	display: none;
+}
+#paramPoi {
+	position: absolute;
+	top: 210px;
+	height: 200px;
+	border: 0px solid #f9f9f9;	
+}
+.lstIti {
+	height: 40px;
+	font-size: 25px;
+}
+.buttSelec {
+	width: 50px;
+	height: 50px;
+}
+.dateHisto {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    width: 100px;
+    font-size: 16px;
+}
+.descHisto {
+    position: absolute;
+    top: 0px;
+    left: 110px;
+    width: 560px;
+    font-size: 20px;
+}
+/* div POI */
+/* ------- */
+.grpPOI {
+	height: 100px;
+	width: 100px;
+	overflow: hidden;
+	border: 0px solid #f9f9f9;
+}
+.respoi {
+	position: absolute;
+	width: 100%;
+	height: 60px;
+}
+.imgPoi {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 40px;
+	width: 40px;
+	border-radius:3px;
+}
+.titrePoi {
+	position: absolute;
+	top: 50px;
+}
+.kmPoi {
+	position: absolute;
+	top: 0px;
+	left: 45px;
+	width: 45px;
+	font-size: 16px;
+}
+.descPoi {
+	position: absolute;
+	top: 0px;
+	left: 90px;
+	width: 560px;
+	font-size: 20px;
+}
+#back {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	height: 65px;
+	width: 65px;
+}
+
+/* DIV compteur                        */
+/* ----------------------------------- */
+#compteur {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 570px;
+	width: 200px;
+	z-index: 2;
+	color: white;
+	background-color:rgba(0,60,136,.5);
+}
+#heureGPS {
+	position: absolute;
+	width: 100%;
+	font-size: 30px;
+	text-align: center;
+}
+.line {
+	position: absolute;
+	left: 5px;
+	width: 95%;
+	height: 1px;
+	background: #fff;
+}
+#destination {
+	position: absolute;
+	border: 7px solid red;
+	left: 2px;
+	width: 180px;
+	top: 50px;
+	background: #fff;
+	border-radius:10px;
+	font-weight: bold;
+	font-size: 18px;
+	color: black;
+	text-align: center;
+	box-shadow: 7px 7px 9px black;
+}
+#trajet {
+	position: absolute;
+	top: 115px;
+	width: 95%;
+	height: 200px;
+	border: 0px solid #000;
+}
+#tpsTot, #arrTime, #tpsRestant, #distRestant, #distTot {
+	width: 100%;
+	text-align: right;
+	font-weight: bold;
+	font-size: 16px;
+}
+#arrTime {
+	font-size: 20px;
+	text-align: center;
+	margin-left:10px;
+	margin-top:200px;
+}
+#vitesse {
+	position: absolute;
+	top: 260px;
+	width: 100%;
+	text-align: center;
+	font-size: 35px;
+}
+#altitude {
+	position: absolute;
+	top: 300px;
+	width: 100%;
+	text-align: center;
+	font-size: 20px;
+}
+#media {
+    position: absolute;
+    top: 350px;
+    width: 99%;
+    height: 443px;
+}
+#pochette {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    width: 50px;
+    height: 50px;
+    border: 0px solid #000;
+}
+#titre {
+    position: absolute;
+    top: 5px;
+    left: 60px;
+    width: 135px;
+    text-align: center;
+    border: 0px solid #000;
+}
+
+#etatCPU, #etatTemp {
+	position: absolute;
+	bottom: 0px;
+	left: 10px;
+	font-size: 20px;
+}
+#etatTemp {
+	left: 100px;
+}
+
+/* bouttons                            */
+/* ----------------------------------- */
+#select {
+	position: absolute;
+	top: 160px;
+	height: 65px;
+	left: 11px;
+	width: 65px;
+	z-index: 2;
+	color: white;
+	background-color:rgba(0,60,136,.5);
+	border-radius:2px
+}
+#suivi {
+	position: absolute;
+	top: 230px;
+	height: 65px;
+	left: 11px;
+	width: 65px;
+	z-index: 2;
+	color: white;
+	background-color:rgba(0,60,136,.5);
+	border-radius:2px
+}
+#switchMultimedia {
+	position: absolute;
+	top: 350px;
+	height: 65px;
+	left: 11px;
+	width: 65px;
+	z-index: 2;
+	color: white;
+	background-color:rgba(0,60,136,.5);
+	border-radius:2px;
+	
+}
+#off {
+	position: absolute;
+	top: 420px;
+	height: 65px;
+	left: 11px;
+	width: 65px;
+	z-index: 2;
+	color: white;
+	background-color:rgba(0,60,136,.5);
+	border-radius:2px;
+}
+
+#echelle {
+	position: absolute;
+	top: 600px;
+	right: 20px;
+	z-index: 2;
+}
+
+/* DIV bas ecran */
+/*****************/
+#position {
+	position:absolute;
+/*	bottom: 0px; */
+	top: 570px;
+	height: 30px;
+	width: 100%;
+	background-color:rgba(0,60,136,.5);
+	z-index: 2;
+	color: #fff;
+	font-size: 25px;
+}
+#distRadar {
+	position: absolute;
+	left: 45px;
+	top: -75px;
+	height: 75px;
+	width: 250px;
+	border-radius: 0px 10px 0px 0px;
+	background-color:rgba(0,60,136,1);
+/*	background-color:rgba(243,6,6,1); */
+	z-index: 4;
+}
+#imgRadar {
+	position: absolute;
+	left: 70px;
+	height: 40px;
+	width: 40px;
+	top: 20px;
+}
+#distRDR {
+	position: absolute;
+	left: 125px;
+	top: 30px;
+	font-size: 25px;
+	font-weight: bold;
+}
+#panneauKM {
+	position: absolute;
+	left: 5px;
+	top: -75px;
+	height: 70px;
+	width: 70px;
+	border-radius:50px;
+	background: #fff;
+	border: 13px solid red;
+	box-shadow: 7px 7px 9px black;
+	z-index: 6;
+}
+#refRoad {
+	position: absolute;
+	left: 120px;
+}
+#maxspeed {
+	position: absolute;
+	top: 18px;
+	left: 4px;
+	width: 60px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	color: black;
+	border: 0px solid #000;
+}

@@ -1,0 +1,718 @@
+/* gestion des DIV grandes */
+/***************************/
+#divPrincipale, #divVideos, #divJeux, #divMusic, #divOther, #divRegAudio, #divGPS, #backgrndVDO, #backgrndJEUX, #divBluetooth {
+	top: 0px;
+	left: 0px;
+	width: 1024px;
+	height: 600px;
+	display: none;
+}
+#divPrincipale {
+	display: initial;
+}
+#backgrndVDO, #backgrndJEUX {
+	background-color: black;
+	display: none;
+	z-index: 6; 
+}
+
+/* IMG boutton DivPrincipale */
+/*****************************/
+#imgBut1, #imgBut2, #imgBut3, #imgBut4, #imgBut5, #imgBut6 {
+	width:130px;
+	height:130px;
+}
+#imgBut1 {
+	top: 30px;
+	left: 10px;
+}
+#imgBut2 {
+	top: 30px;
+	left:150px;
+}
+#imgBut3 {
+	top: 310px;
+	left: 290px;
+}
+#imgBut4 {
+	top: 180px;
+	left: 10px;
+}
+#imgBut5 {
+	top: 450px;
+	left: 884px;
+}
+#imgBut6 {
+	top:180px;
+	left:150px;
+}
+
+/* IMG boutton div annexes   */
+/*****************************/
+#imgMenuBut1, #imgMenuBut2, #imgMenuBut3, #imgMenuBut4, #imgMenuBut5, #imgMenuBut6 {
+	width: 80px;
+	height: 80px;
+}
+#imgMenuBut2 {
+	top: 100px;
+}
+#imgMenuBut3 {
+	top: 200px;
+}
+#imgMenuBut4 {
+	top: 300px;
+}
+#imgMenuBut5 {
+	top: 400px;
+}
+#imgMenuBut6 {
+	top: 500px;
+}
+
+/* IMG etats */
+/*************/
+#etatGlobal {
+	top:450px;
+	left: 300px;
+	width: 330px;
+	height: 130px;
+	border: 0px solid #fff;
+}
+#imgEtat1, #divEtat2, #divEtat3, #imgEtat4, #divEtat5, #divEtat6, #divEtat7, #imgEtat8 {
+	width: 60px;
+	height: 60px;
+/*	background-color: black; */
+	border: 0px solid #000;
+	text-align: center;
+	font-size: 25px;
+/*	color: gray; */
+}
+#imgEtat1, #divEtat2, #divEtat3, #imgEtat4 {
+	top: 0px;
+}
+#divEtat5, #divEtat6, #divEtat7, #imgEtat8 {
+	top: 70px;
+}
+#imgEtat1, #divEtat5 {
+	left: 0px;
+}
+#imgEtat1 {
+	top: 5px;
+	left: 5px;
+	width: 40px;
+	height: 40px;
+}
+#ssid {
+	top: 47px;
+	left: 0px;
+	width: 50px;
+	font-size: 10px;	
+}
+#imgEtat2 {
+    top: 5px;
+    left: 55px;
+    width: 40px;
+    height: 40px;
+}
+#bluedev {
+    top: 47px;
+    left: 50px;
+    width: 50px;
+    font-size: 10px;
+}
+#divEtat2, #divEtat6 {
+	left: 70px;
+}
+#divEtat3, #divEtat7 {
+	left: 0px;
+	text-align: left;
+}
+#imgEtat4, #imgEtat8 {
+	left: 210px;
+}
+#imgEtatSat {
+	width: 40px;
+	left: 12px;
+	height: 40px;
+	border: 0px solid #fff;
+}
+#divNbrSat {
+	left: 11px;
+	font-size: 12px;
+	top: 43px;
+}
+#divNbrTrueSat {
+	left: 35px;
+	font-size: 18px;
+	top:38px;
+}
+#divEtat5 {
+	top: 55px;
+	left: 80px;
+}
+#CanvasCpu {
+	position: absolute;
+	left: 0px;
+	border: 0px solid white;
+}
+#chargeCpu {
+	top: 20px;
+	left: 25px;
+}
+#divEtat6 {
+	top: 55px;
+	left: 170px;
+}
+#CanvasTemp {
+	position: absolute;
+	left: 0px;
+	border: 0px solid white;
+}
+#chargeTemp {
+	top: 20px;
+	left: 25px;
+}
+/* DIV diapo */
+/*************/
+#divDiapo {
+	top: 170px;
+	left: 10px;
+	width: 270px;
+	height: 270px;
+	border: 0px solid #fff;
+}
+
+/* DIV radar */
+/*************/
+#divRadar {
+	top: 350px;
+	left: 10px;
+	width: 270px;
+	height: 230px;
+	border: 0px solid #fff;
+	background-color: gray;
+	box-shadow: 0px 6px 10px rgba(0, 0, 0, 1) ;
+	border-radius: 150px 10px 50px 10px;
+}
+#divRadarWait {
+	top: 50px;
+	left: 50px;
+}
+#Maxspeed {
+	top: 36px;
+	left:18px;
+	width:70px;
+	height:50px;
+	border: 0px solid #000;
+	font-size:33px;
+	font-weight: bold;
+	color: black;
+	text-align: center;
+}
+#divVitesse {
+	top: 30px;
+	left: 120px;
+	width: 140px;
+	border: 0px solid #000;
+	text-align: right;
+}
+#kmh {
+	font-size: 50px;
+	width: 150px;
+}
+#imgRadar {
+	top: 105px;
+	left: 80px;
+	width: 40px;
+	height: 42px;
+	border: 0px solid #fff;
+}
+#distRadar {
+	position: absolute;
+	font-size: 30px;
+	top: 110px;
+	left: 130px;
+	font-weight: bold;
+}
+#imgAlt {
+	top: 180px;
+	left: 20px;
+	width: 30px;
+	height: 30px;
+	border: 0px solid #fff;
+}
+#Altitude {
+	position: absolute;
+	font-size: 25px;
+	top: 182px;
+	left: 60px;
+}
+#imgCompas {
+	top: 160px;
+	left: 190px;
+	width: 65px;
+	height: 65px;
+	-moz-transform: rotate(0deg);  /* FF3.5+ */
+	-webkit-transform: rotate(0deg);  /* Saf3.1+, Chrome */
+}
+
+/* DIV titreEnCours */
+/********************/
+#divTitreEnCours {
+	top: 30px;
+	left: 290px;
+/*	height:410px; */
+	height:260px;
+	width:725px;
+/*	background-color: #F77707; */
+	background-color: #FF7B07;
+	box-shadow: 7px 7px 9px black;
+	border-radius: 10px 10px 10px 0px;
+	border: 1px solid #F77707;
+}
+#imgCover, #saverCover {
+	position:absolute;
+	top:5px;
+	left:515px;
+	width:200px;
+	height:200px;
+}
+/* #AnneeAlbum {
+	top:210px;
+	left:590px;
+	font-weight: bold;
+	font-size: 18px;
+} */
+#progressTime {
+	top:230px;
+	left:565px;
+	font-size: 22px;
+/*	font-family: 'Arial'; */
+}
+#TitrePlay, #saverTitre {
+	font-weight: bold;
+	font-size:40px;
+	text-align:center;
+	top:35px;
+	left:10px;
+	width:500px;
+}
+#ArtistPlay, #saverArtist {
+	font-size:24px;
+	text-align:center;
+	top:135px;
+	left:10px;
+	width:500px;
+/*	font-family: 'Arial'; */
+}
+#progressBarControlPlay {
+	width: 515px;
+	top:235px;
+	left:10px;
+	height: 8px;
+	border-radius: 10px;
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+	margin-bottom: 5px;
+	display: inline-block;
+}
+#progressBarPlay {
+	width: 0px;
+	background: #C96106;
+	height: 8px;
+	text-align: right;
+	line-height: 15px;
+	font-size: 9px;
+	white-space: nowrap;
+	cursor: pointer;
+	border-radius: 10px 10px 10px 10px; /* coins arrondis */
+}
+#buttPlayer {
+	top: 290px;
+	left: 290px;
+/*	height:410px; */
+	height:150px;
+	width:310px;
+	background-color: #FF7B07;
+	box-shadow: 7px 7px 9px black;
+	border-radius: 0px 0px 10px 10px; 
+	border: 0px solid #F77707;
+}
+#butPrev, #butPlayPause, #butNext {
+	position: absolute;
+/*	top:300px; */
+	top:30px;
+	left:15px;
+}
+#butPlayPause {
+	left: 115px;
+}
+#butNext {
+	left: 205px;
+}
+
+/* DIV plEnCoures */
+/******************/
+#divPlEnCours {
+	top: 290px;
+	left: 600px;
+	height: 140px;
+	width: 410px;
+	overflow:hidden;
+	font-size:20px;
+	background-color: #F7821B;
+	border-radius: 0px 0px 10px 0px;
+	color: lightgray;
+/*	font-family: 'Arial'; */
+}
+#PLEnCours {
+	top: 10px;
+	left: 15px;
+}
+#TitresNext {
+	left: 25px;
+	top: 35px;
+	width: 560px;
+}
+
+/* DIV Heure    */
+/****************/
+#divHeure {
+	top: 460px;
+	left: 780px;
+	height: 130px;
+	width: 240px;
+}
+#Jour {
+	top: 50px;
+	left: -35px;
+	height: 30px;
+	width:130px;
+	font-size: 22px;
+	text-align: center;
+}
+.rotation90 {
+	-moz-transform: rotate(-90deg);  /* FF3.5+ */
+	-webkit-transform: rotate(-90deg);  /* Saf3.1+, Chrome */
+}
+#Date {
+	top:0px;
+	left:33px;
+	width: 207px;
+	height: 22px;
+	font-size: 25px;
+	text-align: center;
+}	
+#Heure {
+	top: 25px;
+	left: 45px;
+	font-size: 90px;
+}
+#Minute {
+	top: 27px;
+	right: 10px;
+	font-size: 50px;
+}
+#Seconde {
+	top: 92px;
+	right: 25px;
+	font-size: 22px;
+}
+
+/* DIV Volume */
+/**************/
+#divVolume {
+	top: 470px;
+	left: 640px;
+	height: 60px;
+	width: 120px;
+	border: 0px solid white;
+}
+#imgVol {
+	position: absolute;
+	left: 53px;
+	top: 72px;
+	width: 20px;
+	height: 20px;
+}
+#volume {
+	left: 35px;
+	top: 27px;
+	font-size: 40px;
+}
+#CanvasVol {
+	position: absolute;
+/*	top: 470px;
+	left: 650px;
+*/	border: 0px solid white;
+}
+
+/* DIV lstXXXXX */
+/****************/
+#lstFilms, #lstJeux, #lstMusic, #lstOther, #regAudio, #lstBluetooth {
+	top: 10px;
+	left: 120px;
+	width: 915px;
+	height: 610px;
+	overflow:scroll;
+}
+#menuDiv {
+	top: 10px;
+	left: 5px;
+	width: 100px;
+	height: 570px;
+	border: 0px solid #fff;
+}
+
+/* DIV lstMusic */
+/****************/
+#titreArtist {
+	font-weight: bold;
+	font-size: 25px;
+	width: 800px;
+	left: 50px;
+	border-bottom: 1px solid gray;
+	color: gray;
+}
+
+/* DIV GPS      */
+/****************/
+#itiNavit {
+	top: 20px;
+	left: 300px;
+	height: 300px;
+}
+#ftIti {
+	font-weight: bold;
+	font-size: 30px;
+}
+#ftPeage {
+	font-weight: normal;
+	font-size: 20px;
+	color: gray;
+}
+#legendNavit {
+	top: 330px;
+	left: 200px;
+	width: 700px;
+	height: 260px;
+	border: 2px solid #fff;
+	border-radius: 10px 10px 10px 10px;
+}
+#imgLegend1, #imgLegend2, #imgLegend3, #imgLegend4, #imgLegend5, #imgLegend6, #imgLegend7, #imgLegend8 {
+	height: 50px;
+	width: 50px;
+	border: 0px solid #fff;
+}
+#imgLegend1, #imgLegend5 {
+	top: 10px;
+}
+#imgLegend2, #imgLegend6 {
+	top: 70px;
+}
+#imgLegend3, #imgLegend7 {
+	top: 140px;
+}
+#imgLegend4, #imgLegend8 {
+	top: 200px;
+}
+#imgLegend1, #imgLegend2, #imgLegend3, #imgLegend4 {
+	left: 10px;
+}
+#imgLegend5, #imgLegend6, #imgLegend7, #imgLegend8 {
+	left: 350px;
+}
+#legend1, #legend5 {
+	top: 30px;
+}
+#legend2, #legend6 {
+	top: 90px;
+}
+#legend3, #legend7 {
+	top: 160px;
+}
+#legend4, #legend8 {
+	top: 220px;
+}
+#legend1, #legend2, #legend3, #legend4 {
+	left: 70px;
+	width: 270px;
+}
+#legend5, #legend6, #legend7, #legend8 {
+	left: 410px;
+	width: 270px;
+}
+
+/* DIV lstOther  imgOtherButt<col><lig> */
+/****************************************/
+#imgOtherBut11, #imgOtherBut21, #imgOtherBut22, #imgOtherBut31, #imgOtherBut34, #imgOtherBut41, #imgOtherBut42, #imgOtherBut44 {
+	height: 130px;
+	width: 130px;
+}
+#imgOtherBut11, #imgOtherBut21, #imgOtherBut31, #imgOtherBut51 { top:10px; }
+#imgOtherBut12, #imgOtherBut42, #imgOtherBut22 { top: 160px; }
+#imgOtherBut44, #imgOtherBut34 { top: 400px; }
+#imgOtherBut11, #imgOtherBut12 { left: 115px; }
+#imgOtherBut21, #imgOtherBut22 { left: 295px; }
+#imgOtherBut31, #imgOtherBut34 { left: 475px; }
+#imgOtherBut41, #imgOtherBut42, #imgOtherBut44 { left: 655px; }
+
+/* div liste bluetooth */
+/***********************/
+#divBluetooth {
+    top: 50px;
+}
+.devBlue {
+    height: 60px;
+    width: 400px;
+    border: 1px solid gray;
+}
+
+/* Equalizer */
+/*************/
+#divEqualizer {
+	top: 100px;
+	left: 150px;
+}
+#defEqual {
+	top: -30px;
+	left: 0px;
+	width: 355px;
+	text-align: center;
+}
+#ligne1, #ligne2, #ligne3, #ligne4, #ligne5, #ligne6, #ligne7, #ligne8, #ligne9 {
+	height: 1px;
+	width: 355px;
+	background-color: gray;
+}
+#ligne1, #ligne5, #ligne9 {
+	height: 2px;
+	background-color: white;
+}
+#ligne2 { top: 30px; } /* 9db */
+#ligne3 { top: 60px; } /* 6db */
+#ligne4 { top: 90px; } /* 3db */
+#ligne5 { top: 120px; } /* 0db */
+#ligne6 { top: 150px; } /* -3db */
+#ligne7 { top: 180px; } /* -6db */
+#ligne8 { top: 210px; } /* -9db */
+#ligne9 { top: 240px; } /* -12db */
+
+#cursor1, #cursor2, #cursor3, #cursor4, #cursor5, #cursor6, #cursor7, #cursor8, #cursor9, #cursor10 {
+	top: 110px;
+	width: 30px;
+	height: 20px;
+	background-color: #F77707;
+	border-radius: 10px 10px 10px 10px;
+}
+#cursor1 { left: 5px; } /* 31 */
+#cursor2 { left: 40px; } /* 62 */
+#cursor3 { left: 75px; } /* 125 */
+#cursor4 { left: 110px; } /* 250 */
+#cursor5 { left: 145px; } /* 500 */
+#cursor6 { left: 180px; } /* 1k */
+#cursor7 { left: 215px; } /* 2k */
+#cursor8 { left: 250px; } /* 4k */
+#cursor9 { left: 285px; } /* 8k */
+#cursor10 { left: 320px; } /* 16k */
+
+#labLig1 {
+	top: -10px;
+	left: -45px;
+}
+#labLig5 {
+	top: 110px;
+	left: -40px;
+}
+#labLig9 {
+	top: 230px;
+	left: -50px;
+}
+
+#lstEqual {
+	top: 70px;
+	left: 550px;
+	font-size: 40px;
+}
+ul {
+	list-style: none;
+}
+li a {
+	display: block;
+	text-decoration: none;
+	color: white;
+}
+li a:active {
+	text-decoration: none;
+	color: white;
+}
+
+#WaitID {
+	display:none;
+	top:230px;
+	left:500px;
+}
+
+/* DIV veille ecran */
+/********************/
+#screensaver {
+	top: 0px;
+	left: 0px;
+	width: 1024px;
+	height: 600px;
+	background-color: black;
+	display: none;
+	
+}
+
+/* div gaugeVol */
+/****************/
+#jaugeVol {
+	top: 450px;
+	left: 650px;
+	height: 120px;
+	width: 120px;
+	border: 6px solid gray;
+	background-color: darkgray;
+	border-radius: 70px 70px 50px 50px;
+}
+#jaugeHaut {
+	height: 120px;
+	width: 120px;
+	background-color: darkgray;
+	border-radius: 70px 70px 50px 50px;
+	box-shadow: inset 1px 1px 4px 4px black;
+}
+#jaugeBas {
+	background-color: gray;
+	top: 80px;
+	height: 50px;
+	width: 120px;
+/*	border: 1px solid #fff; */
+	border-radius: 0px 0px 50px 50px;
+}
+#jaugeCentre {
+	background-color: gray;
+	top: 65px;
+	left: 45px;
+	height: 30px;
+	width: 30px;
+	border-radius: 20px 20px 0px 0px;
+}
+#aiguille {
+	top: 30px;
+	left: 58px;
+	width:4px;
+	height: 105px;
+	-webkit-transform: rotate(0deg);
+}
+#petiteAiguille {
+	background-color: red;
+	width: 4px;
+	height: 52px;
+}
+#imgJaugeVol {
+	width: 40px;
+	height: 40px;
+	top: 0px;
+	left: 40px;
+}

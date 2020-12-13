@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>AUTORADIO</title>
+        <link rel="stylesheet" type="text/css" href="/html/css/commun.css" />
+		<link rel="stylesheet" type="text/css" href="/html/css/autoradio.css" />
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/lib/libclient.js"></script>
+		<script src="/lib/libihm.js"></script>
+	</head>
+	
+	<body>
+	
+		<div id="divPrincipale">
+			<img id="imgBut1" src="images/musicMir.png" onmousedown="return false" onmousemove="return false"
+				onclick="AffDIV('divPrincipale', 'divMusic');getAlbums();" />
+			<img id="imgBut2" src="images/restart.png" onmousedown="return false" onmousemove="return false"
+				onclick="sockMaster.emit('RESTART')" />
+			<img id="imgBut4" src="images/otherMir.png" onmousedown="return false" onmousemove="return false"
+				onclick="AffDIV('divPrincipale', 'divOther');" />
+			<img id="imgBut6" src="images/gpsMir.png" onmousedown="return false" onmousemove="return false"
+				onclick="sockMaster.emit('SWITCH', 'NAVIGO');" />
+	
+			<div id="divRadar">
+<!--				<div id="divRadarWait"><img src="images/wait.gif" width="60px" height="60px" /></div>
+-->				<img id="imgPanneau" src="images/panneau.png" width="110px" height="110px" />
+				<div id="Maxspeed"></div>
+				<div id="divVitesse"><span id="kmh">-</span><span>km/h</span></div>
+				<img src="images/radar.png" id="imgRadar" /><span id="distRadar"></span>
+				<img src="images/altitude.png" id="imgAlt" /><span id="Altitude">- m</span>
+				<img src="images/compas.png" id="imgCompas" />
+			</div>
+
+			<div id="divPlEnCours">
+				<div id="PLEnCours"></div>
+				<div id="TitresNext"></div>
+			</div>
+			
+			<div id="divTitreEnCours">
+
+				<img id="imgCover" src="" />
+				<div id="progressTime">00:00 / 00:00</div>
+		
+				<div id="TitrePlay"></div>
+				<div id="ArtistPlay"></div>
+				<div id="progressBarControlPlay">
+					<div id="progressBarPlay"></div>
+				</div>
+					
+			</div>
+
+			<div id="buttPlayer">
+				<img id="butPrev" src="images/prev.png" onclick="Commande('previous')" onmousedown="return false" onmousemove="return false" />
+				<img id="butPlayPause" src="images/pause.png" onclick="play()" onmousedown="return false" onmousemove="return false" />
+				<img id="butNext" src="images/next.png" onclick="Commande('next');" onmousedown="return false" onmousemove="return false" />
+			</div>
+
+			<div id="divHeure">
+				<div id="Jour" class="rotation90"></div>
+				<div id="Date"></div>
+				<div id="Heure"></div>
+				<div id="Minute"></div>
+				<div id="Seconde"></div>
+			</div>
+
+			<div id="divVolume">
+				<canvas id="CanvasVol" width="120px" height="120px" ></canvas>
+				<img id="imgVol" src="images/volume.png" >
+				<div id="volume"></div>
+			</div>
+
+			<div id="etatGlobal" onclick="sockMaster.emit('SWITCH', 'SYSTEM');">
+			
+				<img id="imgEtat1" src="images/wifi_off.png" />
+				<div id='ssid'></div>
+                <img id="imgEtat2" src="images/blue_off.png" />
+                <div id='bluedev'></div>
+				<div id="divEtat5" >
+					<canvas id="CanvasCpu" width="80px" height="80px" ></canvas>
+					<div id="chargeCpu"></div>
+				</div>
+				<div id="divEtat6" >
+					<canvas id="CanvasTemp" width="80px" height="80px" ></canvas>
+					<div id="chargeTemp"></div>
+				</div>
+				<div id="divEtat7">
+					<img id="imgEtatSat" src="images/gps_on.png" />
+					<div id="divNbrSat" ></div>
+					<div id="divNbrTrueSat" ></div>
+				</div>
+			</div>
+
+			<div id="divHeure">
+				<div id="Jour" class="rotation90"></div>
+				<div id="Date"></div>
+				<div id="Heure"></div>
+				<div id="Minute"></div>
+				<div id="Seconde"></div>
+			</div>
+		</div>
+
+		<div id="divRegAudio">
+			<div id="menuDiv">
+				<img id="imgMenuBut1" src="images/retour.png" onclick="AffDIV('divRegAudio', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+			</div>
+			<div id="regAudio">
+				<div id="divEqualizer">
+					<div id="defEqual"></div>
+					<div id="labLig1">12db</div><div id="ligne1"></div>
+					<div id="ligne2"></div>
+					<div id="ligne3"></div>
+					<div id="ligne4"></div>
+					<div id="labLig5">0db</div><div id="ligne5"></div>
+					<div id="ligne6"></div>
+					<div id="ligne7"></div>
+					<div id="ligne8"></div>
+					<div id="labLig9">-12db</div><div id="ligne9"></div>
+					<div id="cursor1"></div>
+					<div id="cursor2"></div>
+					<div id="cursor3"></div>
+					<div id="cursor4"></div>
+					<div id="cursor5"></div>
+					<div id="cursor6"></div>
+					<div id="cursor7"></div>
+					<div id="cursor8"></div>
+					<div id="cursor9"></div>
+					<div id="cursor10"></div>
+				</div>
+				<div id="lstEqual"></div>
+			</div>
+		</div>
+
+		<div id="divVideos">
+			<div id="lstFilms"></div>
+			<div id="menuDiv">
+				<img id="imgMenuBut1" src="images/retour.png" onclick="AffDIV('divVideos', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+			</div>
+		</div>
+		<div id='backgrndVDO'></div>
+	
+		<div id="divMusic">
+			<div id="menuDiv">
+				<img id="imgMenuBut1" src="images/retour.png" onclick="AffDIV('divMusic', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgMenuBut2" src="images/playAll.png" onclick="socket.emit('CMDCLIENT', 'RAZPLAYALL');AffDIV('divMusic', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgMenuBut3" src="images/playSel.png" onclick="PlaySelected();AffDIV('divMusic', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgMenuBut4" src="images/random.png" onclick="SelectButt('imgMenuBut4')" onmousedown="return false" onmousemove="return false" />
+				<img id="imgMenuBut5" src="images/haut.png" onclick="moveDown('lstMusic', '560');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgMenuBut6" src="images/bas.png" onclick="moveUp('lstMusic', '560');" onmousedown="return false" onmousemove="return false" />
+			</div>
+			<div id="lstMusic"></div>
+		</div>
+		
+		<div id="divJeux">
+			<div id="lstJeux"></div>
+			<div id="menuDiv">
+				<img id="imgMenuBut1" src="images/retour.png" onclick="AffDIV('divJeux', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+			</div>
+		</div>
+		<div id='backgrndJEUX'></div>
+
+        <div id="divBluetooth">
+            <div id="lstBluetooth"></div>
+            <div id="menuDiv">
+                <img id="imgMenuBut1" src="images/retour.png" onclick="AffDIV('divBluetooth', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+            </div>
+        </div>
+
+		<div id="divOther">
+			<div id="menuDiv">
+				<img id="imgMenuBut1" src="images/retour.png" onclick="AffDIV('divOther', 'divPrincipale');" onmousedown="return false" onmousemove="return false" />
+			</div>
+			<div id="lstOther">
+				<!-- id="imgOtherButt<col><lig>" -->
+				<img id="imgOtherBut11" src="images/jeuxMir.png" onclick="AffDIV('divOther', 'divJeux');getJeux();" onmousedown="return false" onmousemove="return false" />
+                <img id="imgOtherBut12" src="images/navit.png" onclick="sockMaster.emit('SWITCH', 'NAVIT');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgOtherBut21" src="images/filmsMir.png" onclick="AffDIV('divOther', 'divVideos');getVideo();" onmousedown="return false" onmousemove="return false" />
+                <img id="imgOtherBut22" src="images/Bluetooth_iphone.png" onclick="AffDIV('divOther', 'divBluetooth');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgOtherBut31" src="images/regAudioMir.png" onclick="AffDIV('divOther', 'divRegAudio');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgOtherBut34" src="images/offMir.png" onclick="sockMaster.emit('END');" onmousedown="return false" onmousemove="return false" />
+				<img id="imgOtherBut41" src="images/razMedia.png" onclick="RazMedia();" onmousedown="return false" onmousemove="return false" />
+				<img id="imgOtherBut42" src="images/razJeux.png" onclick="" onmousedown="return false" onmousemove="return false" />
+				<img id="imgOtherBut44" src="images/reset.png" onclick="sockMaster.emit('RESET');" onmousedown="return false" onmousemove="return false" />
+<!--				<img id="imgOtherBut52" src="images/razPhoto.png" onclick="" /> -->
+			
+			</div>
+		</div>
+		
+		<div id="WaitID"><img src="images/wait.gif"></div>
+
+		<div id="screensaver">
+			<img id="saverCover" src="" />
+			<div id="saverTitre"></div>
+			<div id="saverArtist"></div>
+			<div id="saverTemp"></div>	
+		</div>
+
+		<script>
+		
+			//***********************************************************/
+			// INITIALISATION PAGE                                      */
+			//***********************************************************/
+
+			var url = document.URL.split(":");
+			var hostAutoradio = url['1'].replace("//", "")
+		
+			// connection socket multimedia.js
+			var socket = io.connect('http://'+hostAutoradio+':8123');
+			
+			// connection socket Master
+			var sockMaster = io.connect('http://'+hostAutoradio+':8121');
+			
+			// connection socket GPS
+			var sockGPS = io.connect('http://'+hostAutoradio+':8122');
+			
+			// connection socket system
+			var sockSys = io.connect('http://'+hostAutoradio+':8124');
+			
+            // connection socket bluetooth
+            var sockBlue = io.connect('http://'+hostAutoradio+':8127');
+            
+			// demandes des titres restants de la playlist en cours
+			socket.emit('CMDCLIENT', 'RecupPL');
+			
+			// activation de la mise à l'heure
+			window.onload = heureAuto('Heure');
+			window.onload = dateAuto('Jour');
+
+			// PAUSE - reception bouton PAUSE
+			sockMaster.on('PAUSE', function() {
+				
+				console.log('reception PAUSE du MASTER');
+
+				if ( document.getElementById("backgrndVDO").style.display == 'initial' ) {
+					sockMaster.emit('END', 'omxplayer');
+				} else if ( document.getElementById("backgrndJEUX").style.display == 'initial' ) {
+					sockMaster.emit('END', 'mednafen');
+				} else {
+					play();
+				}
+			
+			})
+			
+			//***********************************************************/
+			// DIV titreEncours                                         */
+			//***********************************************************/
+			// TITRE - recuperation du fichier joue
+			socket.on('TITRE', function(FicMP3) {
+				
+				if ( FicMP3.piste < 10 ) {
+					PisteNbr = "0"+FicMP3.piste;
+				} else {
+					PisteNbr = FicMP3.piste;
+				}
+				
+/*				document.getElementById("Artist").innerHTML = FicMP3.nomArtist+" - "+FicMP3.nomAlbum;
+*/				document.getElementById("ArtistPlay").innerHTML = FicMP3.nomartist+" - "+FicMP3.nomalbum+" ("+FicMP3.date+")";
+				document.getElementById("saverArtist").innerHTML = FicMP3.nomartist+" - "+FicMP3.nomalbum+" ("+FicMP3.date+")";
+/*				document.getElementById("Titre").innerHTML = PisteNbr+" . "+FicMP3.nomTitre;
+*/				document.getElementById("TitrePlay").innerHTML = FicMP3.nomtitre;
+				document.getElementById("saverTitre").innerHTML = FicMP3.nomtitre;
+/*				document.getElementById("AnneeAlbum").innerHTML = FicMP3.date;
+*/			
+				document.getElementById("imgCover").src = FicMP3.coverpath;
+				document.getElementById("saverCover").src = FicMP3.coverpath;
+				if ( FicMP3.coverpath == 'images/defaultcover.png' ) {
+					document.getElementById("imgCover").style.boxShadow = '';
+				} else {
+					document.getElementById("imgCover").style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 1)';
+				}
+			});
+   
+            // TITREBLUE - recuperation titre joue bluetooth
+            sockBlue.on('TITREBLUE', function(FicMP3) {
+                
+                document.getElementById("ArtistPlay").innerHTML = FicMP3.artiste+" - "+FicMP3.album;
+                document.getElementById("saverArtist").innerHTML = FicMP3.artiste+" - "+FicMP3.album;
+                document.getElementById("TitrePlay").innerHTML = FicMP3.titre;
+                document.getElementById("saverTitre").innerHTML = FicMP3.titre;
+
+            });
+
+			// DUREE - recuperation de la duree du morceau
+			socket.on('DUREE', function(Duree) {
+				update(Duree['total'], Duree['prog']);
+			});
+			
+			// PLAYLIST - recuperation de la PLAYLIST restante et affichage
+			socket.on('PLAYLIST', function(playlist) {
+
+				var Contenu = "<table>";
+
+				playlist.forEach(function (row) {
+
+					if (row.count) {
+						s = row.plencours
+						var PLCours = s.replace("play", "");
+						document.getElementById("PLEnCours").innerHTML = "En cours : "+PLCours+" : "+row.encours+" / "+row.count;
+					}
+
+//					Contenu = Contenu + "<tr onclick=\"Commande('PlayThis', '"+row.id+"');\"><td id='TitNext'>"+row.nomTitre+"</td><td id='ArtNext'> "+row.nomArtist+"</td></tr>";
+					Contenu = Contenu + "<tr onclick=\"Commande('PlayThis', '"+row.id+"');\"><td id='TitNext'>"+row.nomtitre+"&nbsp;&nbsp;<font size=3>("+row.nomartist+")</font></td></tr>";
+				});
+				
+				Contenu = Contenu + "</table>";
+				document.getElementById("TitresNext").innerHTML = Contenu;
+    
+			});
+
+			//***********************************************************/
+			// DIV Videos                                               */
+			//***********************************************************/
+			// demande de la liste des Media
+			function getVideo() {
+		   		socket.emit('CMDCLIENT', 'RecupMediaVideo');
+		   	}
+	   					
+			// LSTVIDEO - recuperation de la liste des MEDIA video et affichage
+			socket.on('LSTVIDEO', function(media) {
+														
+				var ListMedia = "";
+				var i = "1";
+				var WidthImage = "100";
+				var WidthDiv = "200";
+				var Top = "0";
+						
+				media.forEach(function (row) {
+
+					var Left = parseInt(i) * parseInt(WidthDiv) - parseInt(WidthDiv) + ( parseInt(10) * parseInt(i) );
+				
+					var BoxShadow = "";
+					if (row.coverpath == 'images/coverVideo.png' ) {
+						BoxShadow = ""
+					} else {
+						BoxShadow = "box-shadow:0px 2px 4px rgba(0, 0, 0, 1);"
+					}
+				
+					//var WidthTitre = parseInt(WidthImage) + parseInt(14);
+                    var titreSans = row.nomtitre.replace(/_/g, ' ');        
+					ListMedia = ListMedia+"<div id='video"+row.id+
+						"' style='top:"+Top+"px;left:"+Left+"px;width:"+WidthDiv+"px;text-align:center;'>"+
+						"<img src='"+row.coverpath+"' style='width:"+WidthImage+"px;height:"+WidthImage+"px;"+BoxShadow+"' onclick=\"razTimeVDO ('"+row.path+"');\");\"/>"+
+						"<div style='top:"+WidthImage+"px;width:"+WidthDiv+"px;height:60px;background-color:#FF7B07;box-shadow: 5px 5px 7px black;border-radius: 5px 5px 5px 5px;' onclick=\"PlayVideo('"+row.path+"');\" >"+
+                            "<div style='font-size:14px;color:black;top:2px;'>"+row.reprise+" / "+row.duree+"</div>"+
+						    "<div style='font-size:18px;top:16px;'>"+titreSans+"</div>"+
+                        "</div>"+
+						"</div>";
+					
+					if ( i == "4" ) {
+						i = "1";
+						Top = parseInt(Top) + parseInt(160);
+					} else {
+						i = parseInt(i) + parseInt(1);
+					}
+					
+				});
+					
+				document.getElementById("lstFilms").innerHTML = ListMedia;
+				
+			}); 
+
+			// STOPVDO - arret video
+			socket.on('STOPVDO', function() {
+				document.getElementById("backgrndVDO").style.display = 'none';
+                AffDIV('divVideos', 'divPrincipale');
+			})
+
+			//***********************************************************/
+			// DIV jeux                                                 */
+			//***********************************************************/
+			// demande de la liste des Media
+			function getJeux() {
+		   		socket.emit('CMDCLIENT', 'RecupJeux');
+		   	}
+			
+			// LSTJEUX - recuperation de la liste des jeux video et affichage
+			socket.on('LSTJEUX', function(media) {
+														
+				var ListJeux = "";
+				var i = "1";
+				var WidthImage = "100";
+				var WidthDiv = "150";
+				var Top = "0";
+										
+				media.forEach(function (row) {
+				
+					var Left = parseInt(i) * parseInt(WidthDiv) - parseInt(WidthDiv) + ( parseInt(10) * parseInt(i) );
+				
+					var WidthTitre = parseInt(WidthImage) + parseInt(12);
+					ListJeux = ListJeux+"<div id='jeux"+row.id+"' style='top:"+Top+"px;left:"+Left+"px;width:"+WidthDiv+"px;text-align:center;' onclick=\"playJeux("+row.id+")\">"+
+						"<img src='"+row.coverpath+"' style='width:"+WidthImage+"px;height:"+WidthImage+"px;'/>"+
+						"<div style='font-size:12px;'>"+row.nomjeux+"</div>"+
+						"</div>";
+					
+					if ( i == "5" ) {
+						i = "1";
+						Top = parseInt(Top) + parseInt(150);
+					} else {
+						i = parseInt(i) + parseInt(1);
+					}
+					
+				});
+					
+				document.getElementById("lstJeux").innerHTML = ListJeux;
+				
+			});
+			
+			// STOPJEUX - arret video
+			socket.on('STOPJEUX', function() {
+				document.getElementById("backgrndJEUX").style.display = 'none';
+			})
+			
+
+			//***********************************************************/
+			// DIV Media                                                */
+			//***********************************************************/					
+	   		// demande de la liste des Media
+	   		function getAlbums() {
+		   		socket.emit('CMDCLIENT', 'RecupMediaAudio');
+		   	}
+	   		
+	   		// LSTAUDIO - recuperation de la liste des MEDIA audio et affichage
+			socket.on('LSTAUDIO', function(media) {
+														
+				var ListMedia = "";
+				var i = "0";
+				var WidthDiv = "400";
+				var Top = "-60";
+				var artistEnCours = "none";
+
+				document.getElementById("WaitID").style.display = "none";
+			
+				media.forEach(function (row) {
+
+					if ( i == "2" && artistEnCours == row.nomartist ) {
+						i = "1";
+						Top = parseInt(Top) + parseInt(70);
+					} else {
+						i = parseInt(i) + parseInt(1);
+					}
+	
+					if ( artistEnCours != row.nomartist ) {
+						
+						i = "1";
+						Top = parseInt(Top) + parseInt(70);
+						ListMedia = ListMedia+"<div id='titreArtist' style='top:"+Top+"px;'>"+row.nomartist+"</div>";
+						Top = parseInt(Top) + parseInt(40);
+						artistEnCours = row.nomartist;
+					}
+	
+					var Left = parseInt(i) * parseInt(WidthDiv) - parseInt(WidthDiv) + parseInt(100);
+				
+					var BoxShadow = "";
+					if (row.coverpath == 'images/defaultcover.png' ) {
+						BoxShadow = ""
+					} else {
+						BoxShadow = "box-shadow:0px 2px 4px rgba(0, 0, 0, 1);"
+					}					
+
+					ListMedia = ListMedia+"<div id='media"+row.id+"' style='top:"+Top+"px;left:"+Left+"px;height:55px;width:"+WidthDiv+"px;overflow:hidden;' onclick=\"SelectMedia('media"+row.id+"');\">"+
+								"<img src='"+row.coverpath+".THUMB' style='position:absolute;top:0px;width:50px;height:50px;"+BoxShadow+";' />"+
+								"<div style='top:5px;left:50px;width:200px;width:350px;'><font size='5'>"+row.nomalbum+"</font><br><font size='2'>"+row.date+"</font></div>"+
+								"</div>";
+								
+				});
+
+				document.getElementById("lstMusic").innerHTML = ListMedia;	
+						
+			});
+
+			//***********************************************************/
+			// DIV reglage AUDIO                                        */
+			//***********************************************************/					
+            var ToSend = {cmd: 'equal', param: 'defaut'};
+	   		socket.on('EQUALIZER', function(equal) {
+				//equal['liste']+' defaut = '+equal['def']+' reglage = '+equal['reg']
+
+				document.getElementById("defEqual").innerHTML = equal['def'];
+				
+				// positionnement des cursor
+				var i="1";
+				var tmpTab = equal['reg'].split(":");
+				tmpTab.forEach(function(val) {
+					
+					// 0db = 120px, espacement 10px
+					var topCursor = 110+(parseInt(val)*-10);
+					var idCursor = "cursor"+i;
+					document.getElementById(idCursor).style.top = topCursor+"px";
+					i++;					
+				});
+				
+				// affiche list des Equal
+				var lstEqual = "<ul>";
+				var tmpTab = equal['liste'].split(":");
+				tmpTab.forEach(function(val) {
+					lstEqual = lstEqual+"<li><a href=\"#\" onclick=\"chgtEqual('"+val+"');\" >"+val+"</a></li>";
+				});
+				lstEqual = lstEqual+"</ul>";
+				document.getElementById("lstEqual").innerHTML = lstEqual;
+
+	   		});
+
+			//***********************************************************/
+			// DIV Monitor                                              */
+			//***********************************************************/
+			// etat ETAT
+			var cCpu = document.getElementById("CanvasCpu");
+			var ctxCpu = cCpu.getContext("2d");
+			var cTemp = document.getElementById("CanvasTemp");
+			var ctxTemp = cTemp.getContext("2d");
+			sockSys.on('ETAT', function(etat) {
+//				document.getElementById("divEtat5").innerHTML = etat['cpu']+"<br /><font size='3'>%</font>";
+				document.getElementById("chargeCpu").innerHTML = etat['cpu']+"<br /><font size='3'>%</font>";
+//				document.getElementById("divEtat2").innerHTML = etat['mem']+"<br /><font size='3'>Mo</font>";
+//				document.getElementById("divEtat6").innerHTML = etat['temp']+"<br /><font size='3'>°C</font>";
+				document.getElementById("chargeTemp").innerHTML = etat['temp']+"<br /><font size='3'>°C</font>";
+				document.getElementById("saverTemp").innerHTML = etat['temp']+"<font size='3'>°C</font>"
+				
+				var dimCpu = etat['cpu'] * 2 / 100;
+				ctxCpu.clearRect(0,0,200,200);
+				ctxCpu.beginPath();
+				ctxCpu.arc(40,40,30,0,dimCpu*Math.PI);
+				ctxCpu.lineWidth = 15;
+				ctxCpu.strokeStyle = "gray";
+				if ( etat['cpu'] > 80 ) {
+					ctxCpu.strokeStyle = "orange";
+				}
+				if ( etat['cpu'] > 90 ) {
+					ctxCpu.strokeStyle = "red";
+				}
+				//ctxCpu.shadowOffestX = 2;
+				//ctxCpu.shadowBlur = 10;
+				//ctxCpu.shadowColor = "black";
+				ctxCpu.stroke();
+
+				var dimTemp = etat['temp'] * 2 / 80;
+				ctxTemp.clearRect(0,0,200,200);
+				ctxTemp.beginPath();
+				ctxTemp.arc(40,40,30,0,dimTemp*Math.PI);
+				ctxTemp.lineWidth = 15;
+				ctxTemp.strokeStyle = "gray";
+				if ( etat['temp'] > '65' ) {
+					ctxTemp.strokeStyle = "orange";
+				}
+				if ( etat['temp'] > '70' ) {
+					ctxTemp.strokeStyle = "red";
+				}
+				//ctxTemp.shadowOffestX = 2;
+				//ctxTemp.shadowBlur = 10;
+				//ctxTemp.shadowColor = "black";
+				ctxTemp.stroke();
+			
+			});
+
+			// etat NTP
+			sockSys.on('NTP', function(ntp) {
+				if ( ntp == "OK" ) {
+					document.getElementById("divHeure").style.color = "white";
+				}
+				if ( ntp == "KO" ) {
+					document.getElementById("divHeure").style.color = "#666666";
+				}
+			});
+			// etat WIFI
+			sockSys.on('ETATWIFI', function(wifi) {
+			
+				var etatWifi = wifi.split(':')
+				if ( etatWifi['0'] == 'OFF' ) {
+					document.getElementById("imgEtat1").src = "images/wifi_off.png";
+					document.getElementById("ssid").innerHTML = "<center>...</center>";
+				}
+				if ( etatWifi['0'] == 'ON' ) {
+					document.getElementById("imgEtat1").src = "images/wifi_on.png";
+				}
+				if ( etatWifi['0'] == 'CON' ) {
+					document.getElementById("imgEtat1").src = "images/wifi_connect.png";
+					document.getElementById("ssid").innerHTML = "<center>"+etatWifi['1']+"</center>";
+				}
+			});
+            // etat BLUETOOTH
+            sockSys.on('ETATBLUE', function(bluetooth) {
+            
+                var etatBlue = bluetooth.split(':')
+                if ( etatBlue['0'] == 'OFF' ) {
+                    document.getElementById("imgEtat2").src = "images/blue_off.png";
+                    document.getElementById("bluedev").innerHTML = "<center>...</center>";
+                }
+                if ( etatBlue['0'] == 'ON' ) {
+                    document.getElementById("imgEtat2").src = "images/blue_on.png";
+                }
+                if ( etatBlue['0'] == 'CON' ) {
+                    document.getElementById("imgEtat2").src = "images/blue_connect.png";
+                    //document.getElementById("ssid").innerHTML = "<center>"+etatWifi['1']+"</center>";
+                }
+            });
+			// etat GPSD
+			sockSys.on('GPSD', function(gpsd) {
+				if ( gpsd == 'OFF' ) {
+					document.getElementById("imgEtat7").src = "images/vide.png";
+				}
+				if ( gpsd == 'ON' ) {
+					document.getElementById("imgEtatSat").src = "images/gpsd-actif.png";
+				}
+			});
+			// etat VOLUME
+			var c = document.getElementById("CanvasVol");
+			var ctx = c.getContext("2d");
+			sockSys.on('VOLUME', function(volume) {
+				document.getElementById("volume").innerHTML = parseInt(volume);
+				
+				var dim = volume * 2 / 100;
+
+				ctx.clearRect(0,0,200,200);
+				ctx.beginPath();
+				ctx.arc(60,60,50,0,dim*Math.PI);
+				ctx.lineWidth = 20;
+				ctx.strokeStyle = "gray";
+				//ctx.shadowOffestX = 2;
+				//ctx.shadowBlur = 10;
+				//ctx.shadowColor = "black";
+				ctx.stroke();
+				
+//				volOrient = (parseInt(volume) * 180 / 100) - 90;
+				
+//				document.getElementById("aiguille").style.MozTransform = "rotate("+volOrient+"deg)";
+//				document.getElementById("aiguille").style.webkitTransform = "rotate("+volOrient+"deg)";
+
+			});
+
+			//***********************************************************/
+			// DIV Diapo                                              */
+			//***********************************************************/
+/*			socket.on('DIAPO', function(photo) {
+			
+				photo.forEach(function (row) {
+				
+					if ( row.width > row.height ) {
+						document.getElementById("divDiapo").innerHTML = "<img src='"+row.path+"' style='position:absolute;top:34px;left:0px;width:270px;height:202px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 1);' />";
+					}
+					if ( row.width < row.height ) {
+						document.getElementById("divDiapo").innerHTML = "<img src='"+row.path+"' style='position:absolute;top:0px;left:34px;width:202px;height:270px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 1);' />";
+					}
+				});
+			
+			});
+*/			
+			//***********************************************************/
+			// DIV GPS                                                  */
+			//***********************************************************/
+/*			socket.on('ITINAVIT', function(itinavit) {
+			
+				var tabIti = itinavit.split(":");
+				var lstIti = "<ul>";
+				tabIti.forEach( function(row) {
+				
+					if (row) {
+						var tabDetail = row.split("-");
+						var peage = "";
+						if ( tabDetail['3'] == "SP.txt" ) {
+							peage = "sans péage";
+						}
+						if ( tabDetail['3'] == "AP.txt" ) {
+							peage = "avec péage";
+						}
+						lstIti = lstIti+"<li><a href=\"#\" onclick=\"AffDIV('divGPS', 'divPrincipale');sockMaster.emit('SWITCH', 'NAVIT', '"+row+"');\"<span id='ftIti'>"+tabDetail['1'].replace("_", " ")+" --> "+tabDetail['2'].replace("_", " ")+"</span><br /><span id='ftPeage'>"+peage+"</span></a></li>";
+					}
+				
+				});
+				lstIti = lstIti+"</ul>";
+				document.getElementById("itiNavit").innerHTML = lstIti;
+				
+			});
+*/			
+			//***********************************************************/
+			// div GPS RADAR
+			//***********************************************************/
+			document.getElementById("imgPanneau").style.display = "none";
+			document.getElementById("imgRadar").style.display = "none";
+	
+			// DATAGPS - reception data GPS
+			sockGPS.on('DATAGPS', function(datagps) {
+			
+				//console.log(datagps.vitesse);
+			
+				// affichage du nombre de satellite
+				document.getElementById("divNbrSat").innerHTML = datagps['nbrSat'];
+				document.getElementById("divNbrTrueSat").innerHTML = datagps['nbrSatTrue'];
+			
+				// affichage distance et maxspeed pour le radar
+				if ( datagps['radarDistance'] < 1000 ) {
+					
+					document.getElementById("imgRadar").style.display = "initial";
+					document.getElementById("distRadar").innerHTML = datagps['radarDistance'] + " m";
+					
+					if ( datagps['maxspeed'] ) {
+						document.getElementById("imgPanneau").style.display = "initial";
+						document.getElementById("Maxspeed").innerHTML = datagps['maxspeed'];
+					}
+					
+				} else {
+					
+					document.getElementById("imgRadar").style.display = "none";
+					document.getElementById("distRadar").innerHTML = "";
+					document.getElementById("imgPanneau").style.display = "none";
+					document.getElementById("Maxspeed").innerHTML = "";
+				
+				}
+			
+				// affichage vitesse, altitude et compas
+				document.getElementById("kmh").innerHTML = datagps['vitesse'];
+				document.getElementById("Altitude").innerHTML = datagps['altitude'] + " m";
+				document.getElementById("imgCompas").style.MozTransform = "rotate("+datagps['orientation']+"deg)";
+				document.getElementById("imgCompas").style.webkitTransform = "rotate("+datagps['orientation']+"deg)";
+
+			})
+		
+			//***********************************************************/
+			// gestion vieille ecran                                    */
+			//***********************************************************/
+			function moveSaver() {
+			
+				var TopTitre = Math.random() * 1024;
+				var LeftTitre = Math.random() * 600;
+				document.getElementById("saverTitre").style.top = TopTitre+"px";
+				document.getElementById("saverTitre").style.left = LeftTitre+"px";
+				
+				var TopArtist = Math.random() * 1024;
+				var LeftArtist = Math.random() * 600;
+				document.getElementById("saverArtist").style.top = TopArtist+"px";
+				document.getElementById("saverArtist").style.left = LeftArtist+"px";
+				
+				var TopCover = Math.random() * 1024;
+				var LeftCover = Math.random() * 600;
+				document.getElementById("saverCover").style.top = TopCover+"px";
+				document.getElementById("saverCover").style.left = LeftCover+"px";
+				
+				var TopTemp = Math.random() * 1024;
+				var LeftTemp = Math.random() * 600;
+				document.getElementById("saverTemp").style.top = TopTemp+"px";
+				document.getElementById("saverTemp").style.left = LeftTemp+"px";
+				
+				setTimeout(moveSaver, 10000);
+			};
+			window.onload = moveSaver();
+			sockSys.on('SCREENSAVER', function(veille) {
+				
+				if ( veille == "ON" ) {
+					document.getElementById("screensaver").style.display = "initial";
+				}
+				if ( veille == "OFF" ) {
+					document.getElementById("screensaver").style.display = "none";
+				}
+			});
+   
+            //***********************************************************/
+            // DIV device bluetooth                                     */
+            //***********************************************************/
+            // demande de la liste des devices bluetooth
+            function getDevBluetooth() {
+                   socket.emit('CMDCLIENT', 'RecupDevBluetooth');
+               }
+            
+            // LSTJEUX - recuperation de la liste des jeux video et affichage
+            socket.on('LSTDEVBLUE', function(devices) {
+                
+                var lstDevBlue = "";
+                devices.forEach(function (row) {
+                    
+                    lstDevBlue = lstDevBlue + "<label class='container'>"+row.name+"<input type='checkbox' id='conBluetooth"+row.macid+"' onclick=\"PlayBluetooth('"+row.macid+"');AffDIV('divBluetooth', 'divPrincipale');\" /><span class='checkmark'></span></label>";
+                    
+                });
+                document.getElementById("lstBluetooth").innerHTML = lstDevBlue;
+            });
+            getDevBluetooth();
+            
+		</script>
+	</body>
+</html>

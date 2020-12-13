@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>INIT MULTIMEDIA</title>
+        <link rel="stylesheet" type="text/css" href="/html/css/commun.css" />
+		<link rel="stylesheet" type="text/css" href="/html/css/init.css" />
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/lib/libihm.js"></script>
+		<script src="/lib/libclient.js"></script>
+	</head>
+	
+	<body>
+		
+		<div id="divHeure">
+			<div id="Jour" class="rotation90"></div>
+			<div id="Date"></div>
+			<div id="Heure"></div>
+			<div id="Minute"></div>
+			<div id="Seconde"></div>
+		</div>
+		
+		
+		<img id="rplNomFic" src="images/repertoire.png" />
+		<img id="createDB" src="images/BDD.png" />
+		<img id="majMedia" src="images/coverVideo.png" />
+		<img id="majCover" src="images/defaultcover.png" />
+		<img id="majConsole" src="images/defaultNES.png" />
+		<img id="majPhotos" src="images/photos.png" />
+		
+		<img id="wait" src="images/wait.gif" />
+		<div id="message"></div>
+		
+		<script>
+		
+			/************************************************************/
+			/* INITIALISATION PAGE                                      */
+			/************************************************************/
+
+			var url = document.URL.split(":");
+			var hostAutoradio = url['1'].replace("//", "")
+			
+			// connection socket init
+			var sockInit = io.connect('http://'+hostAutoradio+':8125');
+			// activation de la mise à l'heure
+
+			window.onload = heureAuto('Heure');
+			window.onload = dateAuto('Jour');
+
+			sockInit.on('PROG', function(progression) {
+				document.getElementById(progression).style.display = "initial";
+			});
+			sockInit.on('MSG', function(message) {
+				document.getElementById("message").innerHTML = message;
+				
+				if ( message.indexOf('ERROR') != -1 ) {
+					document.getElementById("wait").style.display = "none";
+				}
+				
+			});			
+
+
+		</script>
+
+	</body>
+</html>

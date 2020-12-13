@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:sql">
+   </FileRef>
+   <FileRef
+      location = "group:arduino">
+   </FileRef>
+   <FileRef
+      location = "group:common">
+   </FileRef>
+   <FileRef
+      location = "group:data">
+   </FileRef>
+   <FileRef
+      location = "group:dump">
+   </FileRef>
+   <FileRef
+      location = "group:favicon.ico">
+   </FileRef>
+   <FileRef
+      location = "group:gps">
+   </FileRef>
+   <FileRef
+      location = "group:html">
+   </FileRef>
+   <FileRef
+      location = "group:lib">
+   </FileRef>
+   <FileRef
+      location = "group:log">
+   </FileRef>
+   <FileRef
+      location = "group:media">
+   </FileRef>
+   <FileRef
+      location = "group:multimedia">
+   </FileRef>
+   <FileRef
+      location = "group:param">
+   </FileRef>
+   <FileRef
+      location = "group:start.sh">
+   </FileRef>
+   <FileRef
+      location = "group:system">
+   </FileRef>
+   <FileRef
+      location = "group:version.txt">
+   </FileRef>
+</Workspace>

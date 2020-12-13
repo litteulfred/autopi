@@ -1,0 +1,517 @@
+body {
+/*	background-image:url("../images/fondecran.png"); */
+/*	background-color: #091a46; */
+	background-color: black;
+/*	background-size: auto auto; */
+/*	background-repeat: no-repeat; */
+/*	font-family: 'Arial Black'; */
+	color: white;
+}
+
+div, img, hr {
+	position:absolute;
+	border: 0px solid #fff;
+}
+
+
+/* gestion des DIV grandes */
+/***************************/
+#divPrincipale, #divVideos, #divJeux, #divMusic, #divOther, #divRegAudio, #divGPS {
+	top: 0px;
+	left: 0px;
+	width: 1024px;
+	height: 600px;
+	display: none;
+}
+#divPrincipale {
+	display: initial;
+}
+
+/* IMG boutton DivPrincipale */
+/*****************************/
+#imgBut1, #imgBut2, #imgBut3, #imgBut4, #imgBut5, #imgBut6 {
+	width:130px;
+	height:130px;
+}
+#imgBut1 {
+	top: 30px;
+	left: 10px;
+}
+#imgBut2 {
+	top: 30px;
+	left:150px;
+}
+#imgBut3 {
+	top: 310px;
+	left: 290px;
+}
+#imgBut4 {
+	top: 180px;
+	left: 10px;
+}
+#imgBut5 {
+	top: 450px;
+	left: 884px;
+}
+#imgBut6 {
+	top:180px;
+	left:150px;
+}
+
+/* IMG boutton div annexes   */
+/*****************************/
+#imgMenuBut1, #imgMenuBut2, #imgMenuBut3, #imgMenuBut4, #imgMenuBut5, #imgMenuBut6 {
+	width: 80px;
+	height: 80px;
+}
+#imgMenuBut2 {
+	top: 100px;
+}
+#imgMenuBut3 {
+	top: 200px;
+}
+#imgMenuBut4 {
+	top: 300px;
+}
+#imgMenuBut5 {
+	top: 400px;
+}
+#imgMenuBut6 {
+	top: 500px;
+}
+
+/* IMG etats */
+/*************/
+#etatGlobal {
+	top:450px;
+	left: 604px;
+}
+#divEtat1, #divEtat2, #divEtat3, #imgEtat4, #divEtat5, #divEtat6, #divEtat7, #imgEtat8 {
+	width: 60px;
+	height: 60px;
+	background-color: black;
+	border: 0px solid #000;
+	text-align: center;
+	font-size: 25px;
+/*	color: gray; */
+}
+#divEtat1, #divEtat2, #divEtat3, #imgEtat4 {
+	top: 0px;
+}
+#divEtat5, #divEtat6, #divEtat7, #imgEtat8 {
+	top: 70px;
+}
+#divEtat1, #divEtat5 {
+	left: 0px;
+}
+#divEtat2, #divEtat6 {
+	left: 70px;
+}
+#divEtat3, #divEtat7 {
+	left: 140px;
+	text-align: left;
+}
+#imgEtat4, #imgEtat8 {
+	left: 210px;
+}
+#imgEtatSat {
+	width: 40px;
+	left: 12px;
+	height: 40px;
+	border: 0px solid #fff;
+}
+#divNbrSat {
+	left: 11px;
+	font-size: 12px;
+	top: 43px;
+}
+#divNbrTrueSat {
+	left: 35px;
+	font-size: 18px;
+	top:38px;
+}
+
+/* DIV diapo */
+/*************/
+#divDiapo {
+	top: 170px;
+	left: 10px;
+	width: 270px;
+	height: 270px;
+	border: 0px solid #fff;
+}
+
+/* DIV radar */
+/*************/
+#divRadar {
+	top: 350px;
+	left: 10px;
+	width: 270px;
+	height: 230px;
+	border: 0px solid #fff;
+	background-color: gray;
+	box-shadow: 0px 6px 10px rgba(0, 0, 0, 1) ;
+	border-radius: 150px 10px 50px 10px;
+}
+#divRadarWait {
+	top: 30px;
+	left: 30px;
+	width: 30px;
+	height: 30px;
+}
+#Maxspeed {
+	top: 36px;
+	left:18px;
+	width:70px;
+	height:50px;
+	border: 0px solid #000;
+	font-size:33px;
+	font-weight: bold;
+	color: black;
+	text-align: center;
+}
+#divVitesse {
+	top: 30px;
+	left: 120px;
+	width: 140px;
+	border: 0px solid #000;
+	text-align: right;
+}
+#kmh {
+	font-size: 50px;
+	width: 150px;
+}
+#imgRadar {
+	top: 105px;
+	left: 80px;
+	width: 40px;
+	height: 42px;
+	border: 0px solid #fff;
+}
+#distRadar {
+	position: absolute;
+	font-size: 30px;
+	top: 110px;
+	left: 130px;
+	font-weight: bold;
+}
+#imgAlt {
+	top: 180px;
+	left: 20px;
+	width: 30px;
+	height: 30px;
+	border: 0px solid #fff;
+}
+#Altitude {
+	position: absolute;
+	font-size: 25px;
+	top: 182px;
+	left: 60px;
+}
+#imgCompas {
+	top: 160px;
+	left: 190px;
+	width: 65px;
+	height: 65px;
+	-moz-transform: rotate(0deg);  /* FF3.5+ */
+	-webkit-transform: rotate(0deg);  /* Saf3.1+, Chrome */
+}
+
+/* DIV titreEnCours */
+/********************/
+#divTitreEnCours {
+	top: 30px;
+	left: 290px;
+	height:410px;
+	width:725px;
+	background-color: #F77707;
+	box-shadow: 0px 6px 10px rgba(0, 0, 0, 1) ;
+	border-radius: 10px 10px 10px 10px;
+}
+#imgCover {
+	position:absolute;
+	top:5px;
+	left:515px;
+	width:200px;
+	height:200px;
+}
+#AnneeAlbum {
+	top:210px;
+	left:590px;
+	font-weight: bold;
+}
+#progressTime {
+	top:230px;
+	left:565px;
+/*	font-family: 'Arial'; */
+}
+#TitrePlay {
+	font-weight: bold;
+	font-size:40px;
+	text-align:center;
+	top:35px;
+	left:10px;
+	width:515px;
+}
+#ArtistPlay {
+	font-size:24px;
+	text-align:center;
+	top:135px;
+	left:10px;
+	width:515px;
+/*	font-family: 'Arial'; */
+}
+#progressBarControlPlay {
+	width: 515px;
+	top:235px;
+	left:10px;
+	height: 8px;
+	border-radius: 10px;
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+	margin-bottom: 5px;
+	display: inline-block;
+}
+#progressBarPlay {
+	width: 0px;
+	background: navy;
+	height: 8px;
+	text-align: right;
+	line-height: 15px;
+	font-size: 9px;
+	white-space: nowrap;
+	cursor: pointer;
+	border-radius: 10px 10px 10px 10px; /* coins arrondis */
+}
+#butPrev, #butPlayPause, #butNext {
+	position: absolute;
+	top:300px;
+	left:10px;
+}
+#butPlayPause {
+	left: 110px;
+}
+#butNext {
+	left: 200px;
+}
+
+/* DIV plEnCoures */
+/******************/
+#divPlEnCours {
+	top: 270px;
+	left: 300px;
+	height: 130px;
+	width: 420px;
+	overflow:hidden;
+/*	font-family: 'Arial'; */
+}
+#TitresNext {
+	left: 20px;
+	top: 20px;
+	width: 560px;
+}
+
+/* DIV Heure    */
+/****************/
+#divHeure {
+	top: 450px;
+	left: 330px;
+	height: 130px;
+	width: 240px;
+}
+#Jour {
+	top: 50px;
+	left: -45px;
+	height: 30px;
+	width:130px;
+	font-size: 25px;
+	text-align: center;
+}
+.rotation90 {
+	-moz-transform: rotate(-90deg);  /* FF3.5+ */
+	-webkit-transform: rotate(-90deg);  /* Saf3.1+, Chrome */
+}
+#Date {
+	top:0px;
+	left:33px;
+	width: 207px;
+	height: 25px;
+	font-size: 25px;
+	text-align: center;
+}	
+#Heure {
+	top: 25px;
+	left: 35px;
+	font-size: 100px;
+}
+#Minute {
+	top: 27px;
+	right: 0px;
+	font-size: 60px;
+}
+#Seconde {
+	top: 92px;
+	right: 15px;
+	font-size: 30px;
+}
+
+/* DIV Volume */
+/**************/
+#divVolume {
+	top: 450px;
+	left: 605px;
+	height: 60px;
+	width: 270px;
+	background-color: #000;
+}
+#imgVol {
+	position: absolute;
+	left: 50px;
+	top: 5px;
+}
+#volume {
+	left: 130px;
+	top: 3px;
+	font-size: 50px;
+}
+
+/* DIV lstXXXXX */
+/****************/
+#lstFilms, #lstJeux, #lstMusic, #lstOther, #regAudio {
+	top: 10px;
+	left: 120px;
+	width: 860px;
+	height: 570px;
+	overflow:hidden;	
+}
+#menuDiv {
+	top: 10px;
+	left: 5px;
+	width: 100px;
+	height: 570px;
+	border: 0px solid #fff;
+}
+
+/* DIV lstMusic */
+/****************/
+#titreArtist {
+	font-weight: bold;
+	font-size: 25px;
+	width: 800px;
+	left: 50px;
+	border-bottom: 1px solid gray;
+	color: gray;
+}
+
+/* DIV GPS      */
+/****************/
+#itiNavit {
+	top: 50px;
+	left: 300px;
+}
+#ftIti {
+	font-weight: bold;
+	font-size: 30px;
+}
+#ftPeage {
+	font-weight: normal;
+	font-size: 20px;
+	color: gray;
+}
+
+/* DIV lstOther   */
+/******************/
+#imgOtherBut11, #imgOtherBut21, #imgOtherBut31, #imgOtherBut51, #imgOtherBut52 {
+	height: 130px;
+	width: 130px;
+}
+#imgOtherBut11, #imgOtherBut21, #imgOtherBut31, #imgOtherBut51 { top:10px; }
+#imgOtherBut52 { top: 140px; }
+#imgOtherBut11 { left: 115px; }
+#imgOtherBut21 { left: 295px; }
+#imgOtherBut31 { left: 475px; }
+#imgOtherBut51, #imgOtherBut52 { left: 685px; }
+
+/* Equalizer */
+/*************/
+#divEqualizer {
+	top: 100px;
+	left: 150px;
+}
+#defEqual {
+	top: -30px;
+	left: 0px;
+	width: 355px;
+	text-align: center;
+}
+#ligne1, #ligne2, #ligne3, #ligne4, #ligne5, #ligne6, #ligne7, #ligne8, #ligne9 {
+	height: 1px;
+	width: 355px;
+	background-color: gray;
+}
+#ligne1, #ligne5, #ligne9 {
+	height: 2px;
+	background-color: white;
+}
+#ligne2 { top: 30px; } /* 9db */
+#ligne3 { top: 60px; } /* 6db */
+#ligne4 { top: 90px; } /* 3db */
+#ligne5 { top: 120px; } /* 0db */
+#ligne6 { top: 150px; } /* -3db */
+#ligne7 { top: 180px; } /* -6db */
+#ligne8 { top: 210px; } /* -9db */
+#ligne9 { top: 240px; } /* -12db */
+
+#cursor1, #cursor2, #cursor3, #cursor4, #cursor5, #cursor6, #cursor7, #cursor8, #cursor9, #cursor10 {
+	top: 110px;
+	width: 30px;
+	height: 20px;
+	background-color: #F77707;
+	border-radius: 10px 10px 10px 10px;
+}
+#cursor1 { left: 5px; } /* 31 */
+#cursor2 { left: 40px; } /* 62 */
+#cursor3 { left: 75px; } /* 125 */
+#cursor4 { left: 110px; } /* 250 */
+#cursor5 { left: 145px; } /* 500 */
+#cursor6 { left: 180px; } /* 1k */
+#cursor7 { left: 215px; } /* 2k */
+#cursor8 { left: 250px; } /* 4k */
+#cursor9 { left: 285px; } /* 8k */
+#cursor10 { left: 320px; } /* 16k */
+
+#labLig1 {
+	top: -10px;
+	left: -45px;
+}
+#labLig5 {
+	top: 110px;
+	left: -40px;
+}
+#labLig9 {
+	top: 230px;
+	left: -50px;
+}
+
+#lstEqual {
+	top: 70px;
+	left: 550px;
+	font-size: 40px;
+}
+ul {
+	list-style: none;
+}
+li a {
+	display: block;
+	text-decoration: none;
+	color: white;
+}
+li a:active {
+	text-decoration: none;
+	color: white;
+}
+
+#WaitID {
+	display:none;
+	top:230px;
+	left:500px;
+}

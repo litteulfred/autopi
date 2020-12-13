@@ -1,0 +1,80 @@
+/* IMG boutton DivPrincipale */
+/*****************************/
+#imgRetour {
+	top: 30px;
+	left: 10px;
+	width: 80px;
+	height: 80px;
+	border: 0px solid #f9f9f9;
+}
+
+/* DIV parametres */
+/******************/
+#parametre {
+	top:50px;
+	left: 190px;
+}
+#modeWifi {
+	top: 0px;
+	left: 200px;
+}
+#ipWIFI {
+	left: 10px;
+	top: 40px;
+}
+#lstwifi {
+	left: 10px;
+	top: 60px;
+	width: 100px;
+}
+
+/* DIV etat des process */
+/************************/
+#etatProcess {
+	position: absolute;
+	left: 670px;
+}
+
+/* DIV Heure    */
+/****************/
+#divHeure {
+	top: 460px;
+	left: 720px;
+	height: 100px;
+	width: 160px;
+}
+#Jour {
+	top: 40px;
+	left: -40px;
+	height: 20px;
+	width:100px;
+	font-size: 20px;
+	text-align: center;
+}
+.rotation90 {
+	-moz-transform: rotate(-90deg);  /* FF3.5+ */
+	-webkit-transform: rotate(-90deg);  /* Saf3.1+, Chrome */
+}
+#Date {
+	top:0px;
+	left:20px;
+	width: 140px;
+	height: 20px;
+	font-size: 20px;
+	text-align: center;
+}	
+#Heure {
+	top: 20px;
+	left: 25px;
+	font-size: 70px;
+}
+#Minute {
+	top: 27px;
+	right: 0px;
+	font-size: 30px;
+}
+#Seconde {
+	top: 67px;
+	right: 7px;
+	font-size: 20px;
+}

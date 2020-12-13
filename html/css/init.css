@@ -1,0 +1,81 @@
+#rplNomFic, #createDB, #majMedia, #majCover, #majConsole, #majPhotos {
+	top: 200px;
+	height: 100px;
+	width: 100px;
+	display: none;
+}
+#rplNomFic {
+	left:50px;
+}
+#createDB {
+	left: 170px;
+}
+#majMedia {
+	left: 290px;
+}
+#majCover {
+	left: 410px;
+}
+#majConsole {
+	left:530px;
+}
+#majPhotos {
+	left:650px;
+}
+#wait {
+	top: 93px;
+	left: 230px;
+	display: initial;
+	height: 50px;
+	width: 50px;
+}
+#message {
+	top: 100px;
+	left: 300px;
+	font-style: bold;
+	font-size: 30px;
+}
+
+/* DIV Heure    */
+/****************/
+#divHeure {
+	top: 460px;
+	left: 720px;
+	height: 100px;
+	width: 160px;
+}
+#Jour {
+	top: 40px;
+	left: -40px;
+	height: 20px;
+	width:100px;
+	font-size: 20px;
+	text-align: center;
+}
+.rotation90 {
+	-moz-transform: rotate(-90deg);  /* FF3.5+ */
+	-webkit-transform: rotate(-90deg);  /* Saf3.1+, Chrome */
+}
+#Date {
+	top:0px;
+	left:20px;
+	width: 140px;
+	height: 20px;
+	font-size: 20px;
+	text-align: center;
+}	
+#Heure {
+	top: 20px;
+	left: 25px;
+	font-size: 70px;
+}
+#Minute {
+	top: 27px;
+	right: 0px;
+	font-size: 30px;
+}
+#Seconde {
+	top: 67px;
+	right: 7px;
+	font-size: 20px;
+}

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>SYSTEM</title>
+        <link rel="stylesheet" type="text/css" href="/html/css/commun.css" />
+		<link rel="stylesheet" type="text/css" href="/html/css/system.css" />
+		<link rel="stylesheet" type="text/css" href="/html/css/autoradio.css" />
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/lib/libclient.js"></script>
+		<script src="/lib/libsystem.js"></script>
+		<script src="/lib/libihm.js"></script>
+	</head>
+	
+	<body>
+		
+		<img id="imgRetour" src="images/retour.png"
+				onclick="sockMaster.emit('END', 'ihmSystem');sockMaster.emit('SWITCH', 'AUTORADIO');" onmousedown="return false" onmousemove="return false" />
+		
+		<div id='parametre'>
+			<label class='container'>Wifi
+				<input type='checkbox' id='checkWifi' onclick="wifiONOFF();" />
+				<span class='checkmark'></span>
+			</label>
+			<div id='modeWifi'>
+				<label class='container' >adhoc
+					<input type='radio' name='modeWifi' onclick="switchWifi('adhoc');" value='adhoc' id='adhoc' />
+					<span class='checkmark'></span>
+				</label>
+				<label class='container' >reseau
+					<input type='radio' name='modeWifi' onclick="switchWifi('reseau');" value='reseau' id='reseau' />
+					<span class='checkmark'></span>
+				</label>
+			</div>
+			<div id='ipWIFI'></div>
+			<div id='lstwifi'></div>
+		</div>
+		
+		<table id="etatProcess"></table>
+
+			<div id="divVolume">
+				<canvas id="CanvasVol" width="120px" height="120px" ></canvas>
+				<img id="imgVol" src="images/volume.png" >
+				<div id="volume"></div>
+			</div>
+
+			<div id="etatGlobal" onclick="sockMaster.emit('SWITCH', 'SYSTEM');">
+			
+				<img id="imgEtat1" src="images/wifi_off.png" />
+				<div id='ssid'></div>
+				
+				<div id="divEtat5" >
+					<canvas id="CanvasCpu" width="80px" height="80px" ></canvas>
+					<div id="chargeCpu"></div>
+				</div>
+				<div id="divEtat6" >
+					<canvas id="CanvasTemp" width="80px" height="80px" ></canvas>
+					<div id="chargeTemp"></div>
+				</div>
+				<div id="divEtat7">
+					<img id="imgEtatSat" src="images/vide.png" />
+					<div id="divNbrSat" ></div>
+					<div id="divNbrTrueSat" ></div>
+				</div>
+			</div>
+
+		
+		<div id="divHeure">
+			<div id="Jour" class="rotation90"></div>
+			<div id="Date"></div>
+			<div id="Heure"></div>
+			<div id="Minute"></div>
+			<div id="Seconde"></div>
+		</div>
+		
+<!--		<img id="imgBut5" src="images/offMir.png" 
+			onclick="sockMaster.emit('END', 'ihmSystem')" />
+-->		
+		<script>
+		
+			/************************************************************/
+			/* INITIALISATION PAGE                                      */
+			/************************************************************/
+
+			var url = document.URL.split(":");
+			var hostAutoradio = url['1'].replace("//", "")
+			
+			// connection socket Master
+			var sockMaster = io.connect('http://'+hostAutoradio+':8121');
+			
+			// connection socket system
+			var sockSys = io.connect('http://'+hostAutoradio+':8124');
+
+			// activation de la mise à l'heure
+			window.onload = heureAuto('Heure');
+			window.onload = dateAuto('Jour');
+
+			/************************************************************/
+			/* Etat des APPLI                                           */
+			/************************************************************/
+			sockSys.on('ETATAPPLI', function(etat) {
+			
+				var divEtat = "<tr style='font-weight: bold;'><th>PROCESS</th><th>MEM (Mo)</th><th>CPU (%)</th></tr>";
+				var chPrev = "";
+				for (var k in etat) {
+					if ( etat.hasOwnProperty(k)) {
+						
+						var champ = k.split(".");
+						var color = "white";
+						
+						if ( ! champ[1] ) {					
+							champ[1] = "total";
+						}
+						if ( champ[1] != chPrev ) {
+
+							if ( etat[k] != 0 && champ[1] != "total" ) {
+								color = "green";
+							}
+
+							divEtat = divEtat+"<tr><th style='color:"+color+";font-size: 20px;width:150px;' >"+champ[1]+"</th><th>"+etat[k]+"</th>";
+						} else {
+							divEtat = divEtat+"<th>"+etat[k]+"</th></tr>";
+						}
+						chPrev = champ[1];
+					}
+				}
+
+				document.getElementById("etatProcess").innerHTML = divEtat;
+			
+			});
+
+			/************************************************************/
+			/* DIV Monitor                                              */
+			/************************************************************/
+			// etat ETAT
+			var cCpu = document.getElementById("CanvasCpu");
+			var ctxCpu = cCpu.getContext("2d");
+			var cTemp = document.getElementById("CanvasTemp");
+			var ctxTemp = cTemp.getContext("2d");
+			sockSys.on('ETAT', function(etat) {
+//				document.getElementById("divEtat5").innerHTML = etat['cpu']+"<br /><font size='3'>%</font>";
+				document.getElementById("chargeCpu").innerHTML = etat['cpu']+"<br /><font size='3'>%</font>";
+//				document.getElementById("divEtat2").innerHTML = etat['mem']+"<br /><font size='3'>Mo</font>";
+//				document.getElementById("divEtat6").innerHTML = etat['temp']+"<br /><font size='3'>°C</font>";
+				document.getElementById("chargeTemp").innerHTML = etat['temp']+"<br /><font size='3'>°C</font>";
+//				document.getElementById("saverTemp").innerHTML = etat['temp']+"<font size='3'>°C</font>"
+				
+				var dimCpu = etat['cpu'] * 2 / 100;
+				ctxCpu.clearRect(0,0,200,200);
+				ctxCpu.beginPath();
+				ctxCpu.arc(40,40,30,0,dimCpu*Math.PI);
+				ctxCpu.lineWidth = 15;
+				ctxCpu.strokeStyle = "gray";
+				if ( etat['cpu'] > 80 ) {
+					ctxCpu.strokeStyle = "orange";
+				}
+				if ( etat['cpu'] > 90 ) {
+					ctxCpu.strokeStyle = "red";
+				}
+				//ctxCpu.shadowOffestX = 2;
+				//ctxCpu.shadowBlur = 10;
+				//ctxCpu.shadowColor = "black";
+				ctxCpu.stroke();
+
+				var dimTemp = etat['temp'] * 2 / 80;
+				ctxTemp.clearRect(0,0,200,200);
+				ctxTemp.beginPath();
+				ctxTemp.arc(40,40,30,0,dimTemp*Math.PI);
+				ctxTemp.lineWidth = 15;
+				ctxTemp.strokeStyle = "gray";
+				if ( etat['temp'] > '65' ) {
+					ctxTemp.strokeStyle = "orange";
+				}
+				if ( etat['temp'] > '70' ) {
+					ctxTemp.strokeStyle = "red";
+				}
+				//ctxTemp.shadowOffestX = 2;
+				//ctxTemp.shadowBlur = 10;
+				//ctxTemp.shadowColor = "black";
+				ctxTemp.stroke();
+				
+				
+//				if ( etat['swap'] != "0" ) {
+//					document.getElementById("divEtat2").style.color = "red";
+//				}
+			
+			});
+
+			// etat APPLI
+//			sockSys.on('ETATAPPLI', function(etat) {
+//				document.getElementById("divEtat5").innerHTML = etat['cpu']+"<br /><font size='3'>%</font>";
+//				document.getElementById("divEtat6").innerHTML = etat['mem']+"<br /><font size='3'>Mo</font>";
+//			});
+			// etat NTP
+			sockSys.on('NTP', function(ntp) {
+				if ( ntp == "OK" ) {
+					document.getElementById("divHeure").style.color = "white";
+				}
+				if ( ntp == "KO" ) {
+					document.getElementById("divHeure").style.color = "#666666";
+				}
+			});
+			// etat WIFI
+			sockSys.on('ETATWIFI', function(wifi) {
+				
+				var etatWifi = wifi.split(':')
+				
+				if ( etatWifi['0'] == 'OFF' ) {
+					document.getElementById("imgEtat1").src = "images/wifi_off.png";
+					document.getElementById("checkWifi").checked = false;
+					document.getElementById("lstwifi").innerHTML = "";
+					document.getElementById("ipWIFI").innerHTML = "";
+					document.getElementById("ssid").innerHTML = "<center>...</center>";
+				}
+				if ( etatWifi['0'] == 'ON' ) {
+					document.getElementById("imgEtat1").src = "images/wifi_on.png";
+					document.getElementById("ssid").innerHTML = "<center>...</center>";
+					document.getElementById("ipWIFI").innerHTML = "";
+					document.getElementById("checkWifi").checked = true;
+				}
+				if ( etatWifi['0'] == 'CON' ) {
+					document.getElementById("imgEtat1").src = "images/wifi_connect.png";
+					document.getElementById("ssid").innerHTML = "<center>"+etatWifi['1']+"</center>";
+					document.getElementById("ipWIFI").innerHTML = "<center>"+etatWifi['2']+"</center>";
+					document.getElementById("checkWifi").checked = true;
+				}
+				if ( etatWifi['0'] == 'LSTWIFI' ) {
+					
+					var lstwifi = '';
+					for (i= 1; i < etatWifi.length; i++) {
+						lstwifi = lstwifi+etatWifi[i]+"<br />";
+					}
+					document.getElementById("lstwifi").innerHTML = lstwifi;
+				}
+				
+				if ( etatWifi['0'] == 'MODE' ) {
+					
+					if ( etatWifi['1'] == 'reseau' ) {
+						document.getElementById("reseau").checked = true;
+					} else {
+						document.getElementById("adhoc").checked = true;
+					}
+					
+				}
+				
+			});
+			// etat GPSD
+			sockSys.on('GPSD', function(gpsd) {
+				if ( gpsd == 'OFF' ) {
+					document.getElementById("imgEtat7").src = "images/vide.png";
+				}
+				if ( gpsd == 'ON' ) {
+					document.getElementById("imgEtatSat").src = "images/gpsd-actif.png";
+				}
+			});
+			// etat VOLUME
+			var c = document.getElementById("CanvasVol");
+			var ctx = c.getContext("2d");
+			sockSys.on('VOLUME', function(volume) {
+				document.getElementById("volume").innerHTML = parseInt(volume);
+				
+				var dim = volume * 2 / 100;
+
+				ctx.clearRect(0,0,200,200);
+				ctx.beginPath();
+				ctx.arc(60,60,50,0,dim*Math.PI);
+				ctx.lineWidth = 20;
+				ctx.strokeStyle = "gray";
+				//ctx.shadowOffestX = 2;
+				//ctx.shadowBlur = 10;
+				//ctx.shadowColor = "black";
+				ctx.stroke();
+				
+//				volOrient = (parseInt(volume) * 180 / 100) - 90;
+				
+//				document.getElementById("aiguille").style.MozTransform = "rotate("+volOrient+"deg)";
+//				document.getElementById("aiguille").style.webkitTransform = "rotate("+volOrient+"deg)";
+
+			});
+
+		</script>
+
+	</body>
+</html>

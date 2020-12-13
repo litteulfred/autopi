@@ -1,0 +1,77 @@
+body {
+/*	background-image:url("../images/fondecran.png"); */
+/*	background-color: #091a46; */
+	background-color: black;
+/*	background-image:radial-gradient(#021130, #000000); */
+	background-image:radial-gradient(#3E485C, #000000);
+/*	background-size: auto auto; */
+/*	background-repeat: no-repeat; */
+/*	font-family: 'Arial Black'; */
+	color: white;
+}
+
+div, img, hr {
+	position:absolute;
+	border: 0px solid #fff;
+}
+
+
+/* --------------------------------- */
+/* radio check / case check          */
+/* --------------------------------- */
+/* Customize the label (radioButton) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 25px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+}
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background-color: #eee;
+  border-radius: 10%;
+/*  border-radius: 50%; */
+}
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #31B404;
+}
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 0px;
+  width: 5px;
+  height: 20px;
+  border: solid white;
+  border-width: 0 7px 7px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
